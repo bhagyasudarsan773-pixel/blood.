@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodLink | Hospital Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .single-container {
+            display: flex;
+            justify-content: center;
+            max-width: 800px;
+            margin: 40px auto;
+            width: 100%;
+        }
+        .hub-card {
+            width: 100%;
+            padding: 40px;
+        }
+        .header-box {
+            text-align: center; margin-bottom: 25px;
+        }
+        .header-box span {
+            font-size: 40px; display: block; margin-bottom: 10px;
+        }
+        .auth-toggle {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
+        .btn-tab {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .btn-tab.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        }
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+        }
+        @media (max-width: 900px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <!-- Header Section -->
+    <div class="header text-center fade-in" style="margin-top: 50px; flex-direction: column;">
+        <h1 class="gradient-text hero-title" style="font-size: 40px; margin-bottom: 10px;">Hospital Hub</h1>
+        <p class="hero-subtitle">Unified portal for facility registration and blood supply management.</p>
+        <a href="/" class="btn-text" style="color: var(--text-secondary); margin-top: 15px; display: inline-block; font-size: 16px;">← Back to Home</a>
+    </div>
+
+    <div class="single-container fade-in delay-1" style="padding: 0 20px;">
+        <!-- Auth Section (Login / Register) -->
+        <div id="auth-section" class="glass-panel hub-card glow-border" style="max-width: 500px;">
+            <div class="auth-toggle">
+                <button id="tab-login" class="btn-tab active" onclick="showAuth('login')">Login</button>
+                <button id="tab-register" class="btn-tab" onclick="showAuth('register')">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-view">
+                <div class="header-box">
+                    <span>🔑</span>
+                    <h3 class="gradient-text">Facility Login</h3>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin-top: 5px;">Access your facility dashboard.</p>
+                </div>
+                <form onsubmit="submitLogin(event)">
+                    <div class="form-group"><label>Username</label><input type="text" id="l-user" required placeholder="city_hospital"></div>
+                    <div class="form-group"><label>Password</label><input type="password" id="l-pass" required placeholder="••••••••"></div>
+                    <button type="submit" class="btn btn-glow full-width" style="margin-top: 15px; height: 50px; font-size: 16px;">
+                        <span>Enter Dashboard ➔</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-view" style="display: none;">
+                <div class="header-box">
+                    <span>🏥</span>
+                    <h3 class="gradient-text">Register Facility</h3>
+                    <p style="font-size: 14px; color: var(--text-secondary); margin-top: 5px;">Join our community network today.</p>
+                </div>
+                <form onsubmit="submitHospitalRegister(event)">
+                    <div class="form-group"><label>Hospital Name</label><input type="text" id="r-name" required placeholder="e.g. City General"></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group"><label>Contact</label><input type="text" id="r-contact" required></div>
+                        <div class="form-group"><label>Address</label><input type="text" id="r-address" required></div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <div class="form-group"><label>Username</label><input type="text" id="r-user" required></div>
+                        <div class="form-group"><label>Password</label><input type="password" id="r-pass" required></div>
+                    </div>
+                    <button type="submit" class="btn btn-glow full-width" style="margin-top: 15px; height: 50px; font-size: 16px;">
+                        <span>Create Account</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Dashboard Section (Hidden until Login) -->
+        <div id="dashboard-section" class="glass-panel hub-card glow-border" style="display: none;">
+            <div class="header" style="justify-content: space-between; align-items: start; margin-bottom: 40px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 20px;">
+                <div style="text-align: left;">
+                    <h2 class="gradient-text" id="hosp-name-display">Hospital Name</h2>
+                    <p style="font-size: 14px; color: var(--text-secondary);">Facility ID: #<span id="hosp-id-display">--</span></p>
+                </div>
+                <button class="btn secondary" onclick="handleLogout()">Logout</button>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Request Form -->
+                <div>
+                    <h3 style="margin-bottom: 20px;">New Blood Request</h3>
+                    <form onsubmit="submitRequest(event)" id="h-request-form">
+                        <div class="form-group">
+                            <label>Blood Group Required</label>
+                            <select id="req-bg" required>
+                                <option value="A+">A+</option><option value="A-">A-</option>
+                                <option value="B+">B+</option><option value="B-">B-</option>
+                                <option value="O+">O+</option><option value="O-">O-</option>
+                                <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity (Bags)</label>
+                            <input type="number" id="req-qty" required min="1" placeholder="e.g. 5">
+                        </div>
+                        <div class="checkbox-label" style="margin-bottom: 20px;">
+                            <input type="checkbox" id="req-emergency"> 🚨 URGENT EMERGENCY
+                        </div>
+                        <button type="submit" class="btn btn-glow full-width"><span>Submit Request</span></button>
+                    </form>
+                </div>
+
+                <!-- Request History -->
+                <div>
+                    <h3 style="margin-bottom: 20px;">Recent Activity</h3>
+                    <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Group</th>
+                                    <th>Qty</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="h-request-history">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="modal">
+        <div class="modal-content glass-panel text-center fade-in" style="max-width: 380px;">
+            <h1 id="rm-icon" style="font-size: 50px; margin-bottom: 10px;">✅</h1>
+            <h3 id="rm-title" style="margin-bottom: 15px; font-size: 22px;">Success</h3>
+            <p id="rm-msg" style="color: var(--text-secondary); margin-bottom: 25px;">Operation completed.</p>
+            <button class="btn secondary" onclick="closeModal('result-modal')">Close</button>
+        </div>
+    </div>
+
+    <script>
+        function showResult(title, msg, isError = false) {
+            document.getElementById('rm-icon').innerText = isError ? "❌" : "✅";
+            document.getElementById('rm-title').innerText = title;
+            document.getElementById('rm-msg').innerText = msg;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+        function closeModal(id) { 
+            document.getElementById(id).style.display = 'none';
+            if (id === 'result-modal' && document.getElementById('rm-title').innerText.includes("Registered")) {
+                showAuth('login');
+            }
+        }
+        function showAuth(view) {
+            document.getElementById('login-view').style.display = (view === 'login') ? 'block' : 'none';
+            document.getElementById('register-view').style.display = (view === 'register') ? 'block' : 'none';
+            document.getElementById('tab-login').classList.toggle('active', view === 'login');
+            document.getElementById('tab-register').classList.toggle('active', view === 'register');
+        }
+
+        async function submitLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('l-user').value;
+            const pass = document.getElementById('l-pass').value;
+            try {
+                const res = await fetch('/api/login', { method: 'POST', body: JSON.stringify({ username: user, password: pass }) });
+                const data = await res.json();
+                if (data.success && data.role === 'Hospital') {
+                    sessionStorage.setItem('hosp_auth', 'true');
+                    sessionStorage.setItem('hosp_id', data.hospital_id);
+                    sessionStorage.setItem('hosp_name', data.name);
+                    showDashboard();
+                } else {
+                    showResult("Login Failed", data.error || "Must be a Hospital account.", true);
+                }
+            } catch (err) { showResult("Error", "Server unreachable", true); }
+        }
+
+        async function submitHospitalRegister(e) {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('r-name').value,
+                contact: document.getElementById('r-contact').value,
+                address: document.getElementById('r-address').value,
+                username: document.getElementById('r-user').value,
+                password: document.getElementById('r-pass').value,
+                role: 'Hospital'
+            };
+            try {
+                const res = await fetch('/api/hospitals', { method: 'POST', body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (data.success) {
+                    showResult("Hospital Registered", `Welcome! Your ID is #${data.hospital_id}. Please login now.`);
+                    e.target.reset();
+                } else { showResult("Failed", data.error, true); }
+            } catch (err) { showResult("Error", "Network issue", true); }
+        }
+
+        function showDashboard() {
+            document.getElementById('auth-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'block';
+            document.getElementById('hosp-name-display').innerText = sessionStorage.getItem('hosp_name');
+            document.getElementById('hosp-id-display').innerText = sessionStorage.getItem('hosp_id');
+            loadHistory();
+        }
+
+        async function loadHistory() {
+            const hospName = sessionStorage.getItem('hosp_name');
+            const res = await fetch('/api/requests');
+            const data = await res.json();
+            const tbody = document.getElementById('h-request-history');
+            tbody.innerHTML = '';
+            data.filter(r => r.hospital === hospName).forEach(req => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${req.date}</td><td><span class="table-badge">${req.blood_group}</span></td><td>${req.quantity}</td><td><span class="status-indicator ${req.status.includes('Pending') ? 'status-pending' : 'status-approved'}">${req.status}</span></td>`;
+                tbody.appendChild(tr);
+            });
+        }
+
+        async function submitRequest(e) {
+            e.preventDefault();
+            const payload = {
+                blood_group: document.getElementById('req-bg').value,
+                quantity: document.getElementById('req-qty').value,
+                hospital_id: sessionStorage.getItem('hosp_id'),
+                is_emergency: document.getElementById('req-emergency').checked
+            };
+            try {
+                const res = await fetch('/api/requests', { method: 'POST', body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (data.success) {
+                    showResult("Request Placed", data.status.includes('Approved') ? "Instantly Approved! Diverting supply." : "Marked as Pending. Awaiting stock.");
+                    document.getElementById('h-request-form').reset();
+                    loadHistory();
+                } else { showResult("Error", data.error, true); }
+            } catch (err) { showResult("Error", "Failed to submit", true); }
+        }
+
+        function handleLogout() {
+            sessionStorage.clear();
+            location.reload();
+        }
+
+        window.onload = () => {
+            if (sessionStorage.getItem('hosp_auth') === 'true') {
+                showDashboard();
+            }
+        };
+    </script>
+</body>
+</html>
