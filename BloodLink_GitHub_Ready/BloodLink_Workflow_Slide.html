@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodLink | Workflow Slide</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #0f172a;
+            color: white;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background-image: radial-gradient(circle at 20% 20%, rgba(255, 71, 87, 0.05) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 80%, rgba(76, 124, 245, 0.05) 0%, transparent 50%);
+        }
+
+        .slide {
+            width: 90%;
+            max-width: 1200px;
+            background: rgba(30, 41, 59, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 32px;
+            padding: 60px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            text-align: center;
+            position: relative;
+        }
+
+        .slide::before {
+            content: 'BLOODLINK WORKFLOW';
+            position: absolute;
+            top: 30px; left: 60px;
+            font-size: 14px; letter-spacing: 4px; color: #ff4757; font-weight: 800;
+        }
+
+        h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 60px; letter-spacing: -2px; }
+        span.red { color: #ff4757; }
+
+        .flow-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 60px;
+            position: relative;
+        }
+
+        .flow-container::after {
+            content: '';
+            position: absolute;
+            top: 40px; left: 10%; width: 80%;
+            height: 2px; background: rgba(255,255,255,0.1);
+            z-index: -1;
+        }
+
+        .step-card {
+            flex: 1;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            transition: 0.4s;
+        }
+        .step-card:hover { 
+            transform: translateY(-10px); 
+            background: rgba(255, 71, 87, 0.08); 
+            border-color: rgba(255, 71, 87, 0.3); 
+        }
+
+        .icon-circle {
+            width: 80px; height: 80px;
+            background: #ff4757;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto 20px auto;
+            font-size: 32px;
+            box-shadow: 0 20px 40px rgba(255, 71, 87, 0.3);
+        }
+
+        h3 { font-size: 1.5rem; margin-bottom: 12px; }
+        p { color: #94a3b8; font-size: 0.95rem; line-height: 1.5; }
+
+        .footer-note {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+            color: #64748b;
+            font-size: 14px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide">
+        <h1>System <span class="red">Technical</span> Workflow</h1>
+
+        <div class="flow-container">
+            <!-- Step 1 -->
+            <div class="step-card">
+                <div class="icon-circle">🔐</div>
+                <h3>INGEST & VALIDATION</h3>
+                <p>Enforces logic-tier rules (56-day lifecycle) via Java handlers and ensures security through SHA-256 credential hashing.</p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-card">
+                <div class="icon-circle">💾</div>
+                <h3>PERSISTENCE (ACID)</h3>
+                <p>Utilizes SQLite with WAL-mode for high-concurrency between Web/GUI threads, ensuring atomic inventory updates.</p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-card">
+                <div class="icon-circle">⚙️</div>
+                <h3>FULFILLMENT ENGINE</h3>
+                <p>Implements real-time inventory deduction with state-management for automated approval and emergency prioritization.</p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-card">
+                <div class="icon-circle">📊</div>
+                <h3>MONITORING & AUDIT</h3>
+                <p>Aggregates system-wide metrics via SQL JOINs and maintains a permanent audit trail for medical accountability.</p>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            <b>Architecture:</b> A decoupled N-tier application stack utilizing a Java Logic Layer, SQLite Persistence Layer, and asynchronous JavaScript Presentation Layer.
+        </div>
+    </div>
+
+</body>
+</html>

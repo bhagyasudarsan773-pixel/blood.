@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodLink | Premium Database System</title>
+    <!-- Premium Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .btn-role {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        .btn-role.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        }
+        .grid-2-1 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
+        @media (max-width: 900px) { .grid-2-1 { grid-template-columns: 1fr; } }
+        
+        .comp-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 6px;
+            border-left: 4px solid var(--accent-blue);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="animated-bg">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+
+    <!-- Landing / Login Page -->
+    <div id="landing-page" class="landing-container">
+        <div class="landing-hero fade-in">
+            <h1 class="gradient-text hero-title">Welcome to BloodLink</h1>
+            <p class="hero-subtitle">The next-generation premium Blood Bank Management System.</p>
+            
+            <!-- Removed redundant links to consolidate into one premium admin button below -->
+
+            <p class="hero-desc" style="margin-top: 20px;">
+                BloodLink provides a seamless, real-time dashboard for managing critical blood inventory, securely
+                registering donors, streamlining donations, and handling urgent hospital requests without delay. Built
+                for speed, reliability, and precision.
+            </p>
+            <div class="vital-stats">
+                <div class="vs-item"><span class="icon">⚡</span> Real-time Tracking</div>
+                <div class="vs-item"><span class="icon">🔒</span> Secure Records</div>
+                <div class="vs-item"><span class="icon">🏥</span> Fast Fulfillment</div>
+            </div>
+        </div>
+
+        <div class="landing-login fade-in delay-2" style="max-width: 1000px; width: 100%; display: flex; flex-direction: column; gap: 30px;">
+            <div class="public-dashboard glass-panel fade-in delay-1" style="padding: 30px;">
+                <h3 class="gradient-text" style="margin-bottom: 20px; font-size: 24px;">Community Live Stock</h3>
+                <div class="stats-overview" style="margin-bottom: 30px;">
+                    <div class="stat-card glass-panel" style="padding: 15px;">
+                        <div class="stat-icon blue-icon">🩸</div>
+                        <div class="stat-info">
+                            <h4 style="font-size: 14px; opacity: 0.8;">Bags Available</h4>
+                            <h2 id="pub-stat-bags" style="font-size: 24px;">0</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel" style="padding: 15px;">
+                        <div class="stat-icon red-icon">👥</div>
+                        <div class="stat-info">
+                            <h4 style="font-size: 14px; opacity: 0.8;">Total Donors</h4>
+                            <h2 id="pub-stat-donors" style="font-size: 24px;">0</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-cards" id="pub-inventory-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; margin-bottom: 30px;">
+                    <!-- Public Inventory -->
+                </div>
+
+                <div class="donor-actions" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px;">
+                    <!-- Donor Portal Access -->
+                    <div style="text-align: center; background: rgba(255,255,255,0.03); padding: 25px; border-radius: 15px;">
+                        <h3 class="gradient-text" style="margin-bottom: 15px;">Give Blood (Donors)</h3>
+                        <p style="font-size: 14px; opacity: 0.8; margin-bottom: 20px;">Save lives by donating blood.</p>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="openPortal('Donor', 'login')" class="btn btn-glow" style="flex:1"><span>Donor Login</span></button>
+                            <button onclick="openPortal('Donor', 'register')" class="btn secondary" style="flex:1"><span>Register</span></button>
+                        </div>
+                    </div>
+                    <!-- Requester Portal Access -->
+                    <div style="text-align: center; background: rgba(255,255,255,0.03); padding: 25px; border-radius: 15px;">
+                        <h3 class="gradient-text" style="margin-bottom: 15px;">Need Blood (Patients)</h3>
+                        <p style="font-size: 14px; opacity: 0.8; margin-bottom: 20px;">Request blood supplies instantly.</p>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="openPortal('Requester', 'login')" class="btn btn-glow" style="flex:1; background: var(--accent-blue);"><span>Patient Login</span></button>
+                            <button onclick="openPortal('Requester', 'register')" class="btn secondary" style="flex:1"><span>Join Now</span></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 30px;">
+                    <a href="hospitals.html" class="glass-panel" style="text-decoration:none; padding: 20px; display: flex; align-items: center; gap: 15px;">
+                        <span style="font-size: 30px;">🏥</span>
+                        <div><h4 style="color:white">Hospital Network</h4><p style="font-size: 12px; color: var(--text-secondary)">Manage facility requests</p></div>
+                    </a>
+                    <a href="admin.html" class="glass-panel" style="text-decoration:none; padding: 20px; display: flex; align-items: center; gap: 15px;">
+                        <span style="font-size: 30px;">🛡️</span>
+                        <div><h4 style="color:white">Admin Control</h4><p style="font-size: 12px; color: var(--text-secondary)">System management</p></div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Member Login Card (Initially Hidden) -->
+            <div id="donor-login-card" class="glass-panel login-card glow-border text-center fade-in" style="margin: 0 auto; width: 100%; max-width: 450px; display: none; padding: 40px; background: rgba(30, 39, 46, 0.45); backdrop-filter: blur(25px);">
+                <div class="logo-icon-wrap" style="margin: 0 auto 20px auto; width: 56px; height: 56px;">
+                    <span class="logo-icon" style="font-size: 28px;">🔑</span>
+                </div>
+                <h2 style="margin-bottom: 5px;" class="gradient-text" id="login-portal-title">Member Login</h2>
+                <p style="color: var(--text-secondary); margin-bottom: 30px; font-size: 14px;">Secure Portal Access</p>
+                <form id="login-form-main" onsubmit="submitLogin(event)">
+                    <div class="form-group" style="text-align: left;">
+                        <label style="opacity: 0.8; font-size: 14px;">Username</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">👤</span>
+                            <input type="text" id="l-user" required placeholder="Enter username">
+                        </div>
+                    </div>
+                    <div class="form-group" style="text-align: left; margin-top: 15px;">
+                        <label style="opacity: 0.8; font-size: 14px;">Password</label>
+                        <div class="input-wrapper">
+                            <span class="prefix">🔒</span>
+                            <input type="password" id="l-pass" required placeholder="••••••••">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-glow full-width" style="height: 50px; font-size: 16px; margin-top: 25px;">
+                        <span>System Access ➔</span>
+                    </button>
+                    <p id="login-error" style="color: var(--accent-red); margin-top: 20px; font-weight: 600; font-size: 14px; display: none;">Invalid credentials.</p>
+                </form>
+                <div style="margin-top: 25px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+                    <button onclick="closePortal()" class="btn-text" style="color: var(--text-secondary); cursor: pointer; font-size: 14px;">← Return to Home</button>
+                </div>
+            </div>
+
+            <!-- Register Card (Initially Hidden) -->
+            <div id="register-card" class="glass-panel login-card glow-border text-center" style="margin: 0 auto; width: 100%; max-width: 500px; display: none;">
+                <h2 style="margin-bottom: 20px;" class="gradient-text">Member Registration</h2>
+                <div class="role-selector" style="display: flex; gap: 10px; margin-bottom: 20px; justify-content: center;">
+                    <button class="btn-role active" id="role-donor" onclick="setRegRole('Donor')">Donor</button>
+                    <button class="btn-role" id="role-patient" onclick="setRegRole('Patient')">Patient</button>
+                    <button class="btn-role" id="role-hospital" onclick="setRegRole('Hospital')">Hospital</button>
+                </div>
+                <div id="reg-email-field" class="form-group" style="text-align: left; margin-bottom: 15px;">
+                    <label>Email Address</label>
+                    <input type="email" id="reg-email" required placeholder="yourname@example.com">
+                </div>
+                <form id="register-form" onsubmit="submitRegister(event)">
+                    <input type="hidden" id="reg-role" value="Donor">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left;">
+                        <div class="form-group"><label>Full Name</label><input type="text" id="reg-name" required></div>
+                        <div class="form-group" id="reg-bg-group">
+                            <label>Blood Group</label>
+                            <select id="reg-bg">
+                                <option value="A+">A+</option><option value="A-">A-</option>
+                                <option value="B+">B+</option><option value="B-">B-</option>
+                                <option value="O+">O+</option><option value="O-">O-</option>
+                                <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="text-align: left;"><label>Contact Number</label><input type="text" id="reg-contact" required></div>
+                    <div class="form-group" style="text-align: left;"><label>Address / Location</label><input type="text" id="reg-address" required placeholder="City, State"></div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; text-align: left;">
+                        <div class="form-group"><label>Username</label><input type="text" id="reg-user" required></div>
+                        <div class="form-group"><label>Password</label><input type="password" id="reg-pass" required></div>
+                    </div>
+                    <button type="submit" class="btn btn-glow full-width" style="margin-top: 10px;"><span>Create Account</span></button>
+                    <p style="margin-top: 15px; font-size: 14px;"><a href="#" onclick="toggleRegister(false)" style="color: var(--text-secondary);">Back to Home</a></p>
+                </form>
+            </div>
+            
+            <!-- Redundant Admin links/FAB removed per requested consolidation -->
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="app-container" class="app-container" style="display: none;">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar glass-panel">
+            <div class="logo">
+                <div class="logo-icon-wrap">
+                    <span class="logo-icon">🩸</span>
+                </div>
+                <h1>BloodLink</h1>
+            </div>
+            <ul class="nav-links">
+                <li id="nav-dashboard" class="active" onclick="showTab('dashboard')">
+                    <i class="icon">📊</i> <span>Dashboard</span>
+                </li>
+                <li id="nav-donors" onclick="showTab('donors')">
+                    <i class="icon">👥</i> <span>Donors</span>
+                </li>
+                <li id="nav-donations" onclick="showTab('donations')">
+                    <i class="icon">💉</i> <span>New Donation</span>
+                </li>
+                <li id="nav-requests" onclick="showTab('requests')">
+                    <i class="icon">🏥</i> <span>Requests</span>
+                </li>
+                <li id="nav-donor-portal" style="display:none" onclick="showTab('donor-dashboard')">
+                    <i class="icon">👤</i> <span>My Donor Portal</span>
+                </li>
+                <li id="nav-requester-portal" style="display:none" onclick="showTab('requester-dashboard')">
+                    <i class="icon">🩹</i> <span>My Patient Portal</span>
+                </li>
+                <li id="nav-hospital-portal" style="display:none" onclick="showTab('hospital-dashboard')">
+                    <i class="icon">🏥</i> <span>Hospital Hub</span>
+                </li>
+                <li id="nav-activity" style="display: none;" onclick="showTab('activity')">
+                    <i class="icon">📜</i> <span>System Audit</span>
+                </li>
+                <li id="nav-users" style="display: none;" onclick="showTab('users')">
+                    <i class="icon">⚙️</i> <span>Manage Users</span>
+                </li>
+                <li id="nav-logout" onclick="handleLogout()" style="margin-top: 40px;">
+                    <i class="icon">🚪</i> <span style="color: var(--accent-red)">Logout</span>
+                </li>
+            </ul>
+
+            <!-- Redundant Sidebar Admin link removed -->
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- Dashboard Tab (Inventory) -->
+            <section id="dashboard" class="tab-pane active slide-up">
+                <div class="header">
+                    <div>
+                        <h2 class="gradient-text">Live Overview</h2>
+                        <p>Real-time analytics and inventory status</p>
+                    </div>
+                </div>
+
+                <!-- Stats Summary -->
+                <div class="stats-overview">
+                    <div class="stat-card glass-panel fade-in delay-1">
+                        <div class="stat-icon red-icon">👥</div>
+                        <div class="stat-info">
+                            <h3>Total Donors</h3>
+                            <h1 id="stat-donors">0</h1>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel fade-in delay-2">
+                        <div class="stat-icon blue-icon">🩸</div>
+                        <div class="stat-info">
+                            <h3>Available Bags</h3>
+                            <h1 id="stat-bags">0</h1>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel fade-in delay-3">
+                        <div class="stat-icon yellow-icon">🏥</div>
+                        <div class="stat-info">
+                            <h3>Pending Requests</h3>
+                            <h1 id="stat-pending">0</h1>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel fade-in delay-4">
+                        <div class="stat-icon green-icon">✔️</div>
+                        <div class="stat-info">
+                            <h3>Approved Requests</h3>
+                            <h1 id="stat-approved">0</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header" style="margin-top: 50px; margin-bottom: 24px;">
+                    <h3><span class="gradient-text">Blood Stock Breakdown</span></h3>
+                </div>
+
+                <div class="dashboard-cards" id="inventory-container">
+                    <!-- Loading or data here -->
+                </div>
+            </section>
+
+            <!-- Donors Tab -->
+            <section id="donors" class="tab-pane slide-up">
+                <div class="header">
+                    <div>
+                        <h2 class="gradient-text">Donor Directory</h2>
+                        <p>Community contribution records</p>
+                    </div>
+                    <button class="btn btn-glow" onclick="openModal('donor-modal')">
+                        <span>+ Add Donor</span>
+                    </button>
+                </div>
+                <div class="table-container glass-panel">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID & Name</th>
+                                <th>Blood Group</th>
+                                <th>Contact</th>
+                                <th>Last Donate</th>
+                            </tr>
+                        </thead>
+                        <tbody id="donors-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Record Donation Tab -->
+            <section id="donations" class="tab-pane slide-up">
+                <div class="header text-center" style="justify-content: center; flex-direction: column; gap: 10px; margin-bottom: 40px;">
+                    <h2 class="gradient-text" style="font-size: 36px;">Record a Donation</h2>
+                    <p>Contribute to the blood bank</p>
+                <div class="form-card glass-panel align-center-card glow-border" style="max-width: 450px;">
+                    <form id="donation-form" onsubmit="submitDonation(event)">
+                        <div class="form-group">
+                            <label>Donor ID</label>
+                            <input type="number" id="don-donor-id" required placeholder="Enter ID">
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity (Bags)</label>
+                            <input type="number" id="don-qty" required min="1" placeholder="e.g. 1">
+                        </div>
+                        <button type="submit" class="btn btn-glow full-width"><span>Submit Donation</span></button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Requests Tab -->
+            <section id="requests" class="tab-pane slide-up">
+                <div class="header">
+                    <div>
+                        <h2 class="gradient-text">Community Requests</h2>
+                        <p>Track ongoing requests (Fulfillment managed by Admin)</p>
+                    </div>
+                    <button class="btn secondary" onclick="openModal('request-modal')">
+                        <span>🏥 New Request</span>
+                    </button>
+                </div>
+                <div class="table-container glass-panel">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Requester</th>
+                                <th>Group</th>
+                                <th>Qty</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requests-table-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- User Management Tab -->
+            <section id="users" class="tab-pane slide-up">
+                <div class="header">
+                    <div><h2 class="gradient-text">Member Accounts</h2><p>View community access</p></div>
+                </div>
+                <div class="table-container glass-panel">
+                    <table><thead><tr><th>User ID</th><th>Username</th><th>Role</th><th>Action</th></tr></thead><tbody id="users-table-body"></tbody></table>
+                </div>
+            </section>
+
+
+            <section id="donor-dashboard" class="tab-pane slide-up">
+                <div class="header">
+                    <div>
+                        <h2 class="gradient-text">My Donor Portal</h2>
+                        <p>Track your contributions and update your profile.</p>
+                    </div>
+                    <div style="margin-left:auto; display: flex; gap: 10px; align-items: center;">
+                        <span class="bg-badge" style="background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.1); padding: 8px 15px; font-weight: bold; color: var(--accent-blue);">Donor ID: #<span id="donor-id-display">--</span></span>
+                        <div id="personalized-greeting" style="margin-left: 15px; font-weight: 600; opacity: 0.9;">Hello, <span id="hello-name">Donor</span>! 👋</div>
+                        <div style="margin-left: auto; display: flex; gap: 10px;">
+                            <button class="btn secondary" onclick="openProfileModal()">👤 Edit Profile</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-overview" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
+                    <div class="stat-card glass-panel fade-in" style="border-bottom: 4px solid var(--accent-red);">
+                        <div class="stat-icon red-icon">🩸</div>
+                        <div class="stat-info">
+                            <h3>Blood Group</h3>
+                            <h2 id="my-blood-group" style="font-size: 28px;">--</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel fade-in" style="border-bottom: 4px solid var(--accent-blue);">
+                        <div class="stat-icon blue-icon">🌟</div>
+                        <div class="stat-info">
+                            <h3>Impact Score</h3>
+                            <h2 id="impact-score" style="font-size: 28px;">0</h2>
+                            <p style="font-size: 10px; opacity: 0.6; text-transform: uppercase;">Lives Saved</p>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel fade-in" style="border-bottom: 4px solid var(--success);">
+                        <div class="stat-icon green-icon">⚡</div>
+                        <div class="stat-info" style="width: 100%;">
+                            <h3>Eligibility</h3>
+                            <h2 id="eligibility-status" style="font-size: 18px; margin-bottom: 5px;">Checking...</h2>
+                            <div class="progress-bar-container" style="height: 6px; margin-top: 5px;">
+                                <div id="eligibility-progress" class="progress-bar" style="width: 0%; background: var(--success);"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2-1" style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; margin-top: 40px;">
+                <div class="grid-2-1" style="display: grid; grid-template-columns: 1.25fr 1fr; gap: 30px; margin-top: 40px;">
+                    <div class="glass-panel" style="padding: 25px;">
+                        <h3 style="margin-bottom: 25px;">My Donation History</h3>
+                        <div class="table-container no-scroll" style="max-height: 400px; overflow-y: auto;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Quantity (Bags)</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="my-donations-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="glass-panel" style="padding: 30px;">
+                        <h3 class="gradient-text" style="margin-bottom: 25px;">💉 Record New Donation</h3>
+                        <form onsubmit="submitDonorDonation(event)">
+                            <div class="form-group" style="margin-bottom: 25px;">
+                                <label style="display:block; margin-bottom:10px; opacity:0.8">Amount to Donate (Bags)</label>
+                                <input type="number" id="d-don-qty" required min="1" placeholder="e.g. 1" class="full-width" style="padding:15px; background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.1); color:white; border-radius:10px; font-size: 16px;">
+                            </div>
+                            <button type="submit" class="btn btn-glow full-width" style="height: 60px; font-weight: bold; font-size: 18px;">
+                                <span>Complete Donation ➔</span>
+                            </button>
+                        </form>
+                        
+                        <div style="margin-top: 40px;">
+                            <h4 style="font-size: 14px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-blue);">Recent Activity</h4>
+                            <div id="donor-activity-list" class="activity-list">
+                                <!-- Activity items here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Hospital Specific Dashboard -->
+            <section id="hospital-dashboard" class="tab-pane slide-up">
+                <div class="header">
+                    <div>
+                        <h2 class="gradient-text">Hospital Hub</h2>
+                        <p>Manage your facility supplies and requests.</p>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span class="bg-badge" style="background: var(--glass-bg); border: 1px solid rgba(255,255,255,0.1); padding: 8px 15px; font-weight: bold; color: var(--accent-blue);">Hospital ID: #<span id="hosp-id-display">--</span></span>
+                        <button class="btn btn-glow" onclick="openModal('request-modal')">
+                            <span>+ New Blood Request</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="stats-overview">
+                    <div class="stat-card glass-panel fade-in delay-1">
+                        <div class="stat-icon red-icon">🏢</div>
+                        <div class="stat-info">
+                            <h3>Facility Name</h3>
+                            <h2 id="hosp-name-display">--</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel fade-in delay-2">
+                        <div class="stat-icon yellow-icon">🏥</div>
+                        <div class="stat-info">
+                            <h3>Active Requests</h3>
+                            <h2 id="hosp-active-requests">0</h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header" style="margin-top: 40px;"><h3>Our Request History</h3></div>
+                <div class="table-container glass-panel">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Blood Group</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hosp-requests-table"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="requester-dashboard" class="tab-pane slide-up">
+                <div class="header">
+                    <div>
+                        <h2 class="gradient-text">Patient Request Portal</h2>
+                        <p>Request blood supplies and check compatibility.</p>
+                    </div>
+                </div>
+
+                <div class="stats-overview" style="margin-bottom: 30px;">
+                    <div class="stat-card glass-panel fade-in delay-1">
+                        <div class="stat-icon red-icon">👤</div>
+                        <div class="stat-info">
+                            <h4 style="font-size: 14px; opacity: 0.8;">Patient Name</h4>
+                            <h2 id="patient-name-display" style="font-size: 20px;">--</h2>
+                        </div>
+                    </div>
+                    <div class="stat-card glass-panel fade-in delay-2">
+                        <div class="stat-icon blue-icon">🩹</div>
+                        <div class="stat-info">
+                            <h4 style="font-size: 14px; opacity: 0.8;">Patient ID</h4>
+                            <h2 style="font-size: 20px;">#<span id="patient-id-display">--</span></h2>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2-1" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                    <!-- Quick Request Form -->
+                    <div class="glass-panel" style="padding: 25px;">
+                        <h3 class="gradient-text" style="margin-bottom: 20px;">🩸 Quick Blood Request</h3>
+                        <form onsubmit="submitQuickRequest(event)">
+                            <div class="form-group">
+                                <label>Blood Group Required</label>
+                                <select id="q-req-bg" required>
+                                    <option value="A+">A+</option><option value="A-">A-</option>
+                                    <option value="B+">B+</option><option value="B-">B-</option>
+                                    <option value="O+">O+</option><option value="O-">O-</option>
+                                    <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Quantity (Bags)</label>
+                                <input type="number" id="q-req-qty" required min="1" placeholder="e.g. 5">
+                            </div>
+                            <div class="checkbox-label" style="margin-bottom: 20px; color: var(--accent-red); font-weight: bold; cursor: pointer;">
+                                <input type="checkbox" id="q-req-emergency" style="width: auto; margin-right: 10px;"> 🚨 URGENT EMERGENCY
+                            </div>
+                            <button type="submit" class="btn btn-glow full-width" style="height: 50px;">
+                                <span>Submit Request ➔</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Compatibility Matrix Section -->
+                    <div class="glass-panel" style="padding: 25px;">
+                        <h3 class="gradient-text" style="margin-bottom: 20px;">🔍 Compatibility Matrix</h3>
+                        <p style="font-size: 14px; margin-bottom: 20px; opacity: 0.8;">Select your blood group to see safe compatibility:</p>
+                        <select id="comp-bg-select" class="full-width" style="margin-bottom: 20px; padding: 12px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); color: white;" onchange="updateCompatibilityView()">
+                            <option value="A+">A+</option><option value="A-">A-</option>
+                            <option value="B+">B+</option><option value="B-">B-</option>
+                            <option value="O+">O+</option><option value="O-">O-</option>
+                            <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                        </select>
+                        <div id="compatibility-results" style="display: flex; flex-direction: column; gap: 10px;">
+                            <!-- Compatibility results here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-2-1" style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px;">
+                     <div class="glass-panel" style="padding: 25px;">
+                        <h3 style="margin-bottom: 20px;">My Request History</h3>
+                        <div class="table-container no-scroll">
+                            <table style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Group</th>
+                                        <th>Qty</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="req-requests-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel" style="padding: 25px;">
+                        <h4 style="font-size: 14px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-blue);">Portal Activity</h4>
+                        <div id="patient-activity-list" class="activity-list">
+                            <!-- Patient activity here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="donor-modal" class="modal">
+        <div class="modal-content glass-panel glow-border">
+            <span class="close" onclick="closeModal('donor-modal')">&times;</span>
+            <h3 class="modal-title gradient-text">Register New Donor</h3>
+            <form id="donor-form" onsubmit="submitDonor(event)">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="d-name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Blood Group</label>
+                    <select id="d-bg" required>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Contact Number</label>
+                    <input type="text" id="d-contact" required placeholder="555-0192">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="d-email" placeholder="john@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <input type="text" id="d-address" placeholder="123 Street, City">
+                </div>
+                <div class="form-group">
+                    <label>Last Donation Date</label>
+                    <input type="date" id="d-last" placeholder="YYYY-MM-DD">
+                </div>
+                <button type="submit" class="btn btn-glow full-width"><span>Register Donor</span></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit full donor Modal -->
+    <div id="edit-donor-modal" class="modal">
+        <div class="modal-content glass-panel glow-border" style="max-width: 500px">
+            <span class="close" onclick="closeModal('edit-donor-modal')">&times;</span>
+            <h3 class="modal-title gradient-text">Edit Donor Details</h3>
+            <form id="edit-donor-form" onsubmit="submitDonorUpdate(event)">
+                <input type="hidden" id="edit-donor-id">
+                <div class="form-group" style="display:flex; gap:10px;">
+                    <div style="flex:1"><label>Full Name</label><input type="text" id="ed-name" required></div>
+                    <div style="width:100px"><label>Blood</label>
+                        <select id="ed-bg" required style="padding: 14px 10px;">
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" style="display:flex; gap:10px;">
+                    <div style="flex:1"><label>Contact</label><input type="text" id="ed-contact" required></div>
+                    <div style="flex:1"><label>Email</label><input type="email" id="ed-email"></div>
+                </div>
+                <div class="form-group">
+                    <label>Address / Location</label>
+                    <input type="text" id="ed-address">
+                </div>
+                <div class="form-group">
+                    <label>Last Donation Date</label>
+                    <input type="date" id="ed-last">
+                </div>
+                <button type="submit" class="btn secondary full-width"><span>Update Profile</span></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Request Modal -->
+    <div id="request-modal" class="modal">
+        <div class="modal-content glass-panel glow-border">
+            <span class="close" onclick="closeModal('request-modal')">&times;</span>
+            <h3 class="modal-title gradient-text">New Blood Request</h3>
+            <form id="request-form" onsubmit="submitRequest(event)">
+                <div class="form-group">
+                    <label>Your Name / Organization</label>
+                    <input type="text" id="r-hosp" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Required Blood Group</label>
+                    <select id="r-bg" required>
+                        <option value="A+">A+</option><option value="A-">A-</option>
+                        <option value="B+">B+</option><option value="B-">B-</option>
+                        <option value="O+">O+</option><option value="O-">O-</option>
+                        <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity Needed (Bags)</label>
+                    <input type="number" id="r-qty" required min="1" placeholder="3">
+                </div>
+                <div style="margin-bottom: 20px;"><label style="color:var(--accent-red)"><input type="checkbox" id="r-emergency"> 🚨 EMERGENCY (Override limits & alert)</label></div>
+                <button type="submit" class="btn secondary full-width"><span>Submit Request</span></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Profile Update Modal -->
+    <div id="profile-modal" class="modal">
+        <div class="modal-content glass-panel glow-border" style="max-width: 450px;">
+            <span class="close" onclick="closeModal('profile-modal')">&times;</span>
+            <h3 class="modal-title gradient-text">Edit Your Profile</h3>
+            <form onsubmit="submitProfileUpdate(event)">
+                <div class="form-group">
+                    <label>Display Name</label>
+                    <input type="text" id="p-name" required placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <label>Contact Number</label>
+                    <input type="text" id="p-contact" required placeholder="555-0100">
+                </div>
+                <div class="form-group">
+                    <label>Residential Address</label>
+                    <input type="text" id="p-address" required placeholder="Current Location">
+                </div>
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" id="p-email" required placeholder="email@example.com">
+                </div>
+                <div class="form-group" id="p-bg-group" style="display:none">
+                    <label>Blood Group</label>
+                    <select id="p-bg">
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                    </select>
+                </div>
+                <div class="glass-panel" style="margin-top: 20px; padding: 15px; background: rgba(255,255,255,0.03); border-left: 4px solid var(--accent-red);">
+                    <p style="font-size: 12px; opacity: 0.7;">Note: Your blood group and username cannot be changed for security reasons. Please contact an admin for these updates.</p>
+                </div>
+                <button type="submit" class="btn btn-glow full-width" style="margin-top: 25px;">
+                    <span>Update Profile Details ➔</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Result Modal for Feedback -->
+    <div id="result-modal" class="modal">
+        <div class="modal-content glass-panel text-center" style="max-width: 380px;">
+            <h1 id="rm-icon" style="font-size: 50px; margin-bottom: 10px;">✅</h1>
+            <h3 id="rm-title" style="margin-bottom: 15px; font-size: 22px;">Success</h3>
+            <p id="rm-msg" style="color: var(--text-secondary); margin-bottom: 25px;">Operation completed.</p>
+            <button class="btn secondary" onclick="closeModal('result-modal')">Close</button>
+        </div>
+    </div>
+
+
+    <script>
+        function showResult(title, msg, isError = false) {
+            document.getElementById('rm-icon').innerText = isError ? "❌" : "✅";
+            document.getElementById('rm-title').innerText = title;
+            document.getElementById('rm-msg').innerText = msg;
+            openModal('result-modal');
+        }
+
+        // Tab Navigation Logic
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-links li').forEach(el => el.classList.remove('active'));
+            
+            // Map tabId to the corresponding sidebar item by index or ID
+            const tabMap = {
+                'dashboard': 0,
+                'donors': 1,
+                'donations': 2,
+                'requests': 3,
+                'donor-dashboard': 4,
+                'requester-dashboard': 5,
+                'hospital-dashboard': 6,
+                'activity': 7,
+                'users': 8
+            };
+            
+            const idx = tabMap[tabId];
+            if (idx !== undefined && document.querySelectorAll('.nav-links li')[idx]) {
+                document.querySelectorAll('.nav-links li')[idx].classList.add('active');
+            }
+            
+            document.getElementById(tabId).classList.add('active');
+            
+            // Data Loading based on tab
+            if (tabId === 'dashboard') { loadStats(); loadInventory(); }
+            if (tabId === 'donors') loadDonors();
+            if (tabId === 'requests') loadRequests();
+            if (tabId === 'users') loadUsers();
+            if (tabId === 'donor-dashboard') loadMyDonations();
+            if (tabId === 'hospital-dashboard') loadHospitalPortal();
+            if (tabId === 'requester-dashboard') loadRequesterPortal();
+        }
+
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        window.onclick = function (event) { if (event.target.classList.contains('modal')) event.target.style.display = 'none'; }
+
+        // API Fetch Logic
+        async function loadStats() {
+            try {
+                const res = await fetch('/api/stats');
+                const stats = await res.json();
+                document.getElementById('stat-donors').innerText = stats.total_donors;
+                document.getElementById('stat-bags').innerText = stats.total_bags;
+                if(document.getElementById('stat-pending')) document.getElementById('stat-pending').innerText = stats.pending_requests;
+                if(document.getElementById('stat-approved')) document.getElementById('stat-approved').innerText = stats.approved_requests;
+            } catch (e) { console.error(e); }
+        }
+
+        async function loadDonors() {
+            const res = await fetch('/api/donors');
+            const data = await res.json();
+            const tbody = document.getElementById('donors-table-body');
+            tbody.innerHTML = '';
+            data.forEach(d => {
+                tbody.innerHTML += `<tr><td>${d.id} - ${d.name}</td><td>${d.blood_group}</td><td>${d.contact}</td><td>${d.last_donation || 'None'}</td></tr>`;
+            });
+        }
+
+        async function loadRequests() {
+            const res = await fetch('/api/requests');
+            const data = await res.json();
+            const tbody = document.getElementById('requests-table-body');
+            tbody.innerHTML = '';
+            data.forEach(r => {
+                tbody.innerHTML += `<tr><td>${r.id}</td><td>${r.hospital}</td><td>${r.blood_group}</td><td>${r.quantity}</td><td><span class="status-badge">${r.status}</span></td></tr>`;
+            });
+        }
+
+        async function loadUsers() {
+            const res = await fetch('/api/users');
+            const data = await res.json();
+            const tbody = document.getElementById('users-table-body');
+            tbody.innerHTML = '';
+            data.forEach(u => {
+                tbody.innerHTML += `<tr><td>${u.id}</td><td>${u.username}</td><td>${u.role}</td></tr>`;
+            });
+        }
+
+        async function submitDonation(e) {
+            e.preventDefault();
+            const donorId = document.getElementById('don-donor-id').value;
+            const qty = document.getElementById('don-qty').value;
+            try {
+                const res = await fetch('/api/donate', { method: 'POST', body: JSON.stringify({ donor_id: donorId, quantity: qty }) });
+                const data = await res.json();
+                if (data.success) {
+                    showResult("Success", "Donation recorded!");
+                    showTab('dashboard');
+                } else { showResult("Error", data.error, true); }
+            } catch (e) { showResult("Error", "Network error", true); }
+        }
+
+        async function loadInventory() {
+            try {
+                const res = await fetch('/api/inventory');
+                const data = await res.json();
+                const container = document.getElementById('inventory-container');
+                container.innerHTML = '';
+
+                if (data.length === 0) {
+                    container.innerHTML = "<div class='empty-state fade-in glow-border' style='grid-column: 1 / -1;'><div class='empty-icon pulse-anim'>📉</div><h3>No Blood Inventory Found</h3><p>To stock the blood bank, add a donor and record a new donation!</p><button class='btn btn-glow mt-4' style='margin-top:20px;' onclick='showTab(\"donations\")'><span>Record a Donation</span></button></div>";
+                    return;
+                }
+
+                let validInventoryFound = false;
+                data.forEach(item => {
+                    const card = document.createElement('div');
+                    let isLow = item.quantity > 0 && item.quantity < 3;
+                    card.className = 'blood-card glass-panel fade-in group-card' + (isLow ? ' low-stock-pulse' : '');
+
+                    const maxBags = 20;
+                    const percent = Math.min((item.quantity / maxBags) * 100, 100);
+                    let barColor = item.quantity > 5 ? 'var(--success)' : (item.quantity > 2 ? 'var(--accent-blue)' : 'var(--accent-red)');
+
+                    card.innerHTML = "<div class='card-header'><div class='bg-badge'>" + item.blood_group + "</div><h2 style='font-size: 32px; font-weight:800; color:" + barColor + "'>" + item.quantity + "</h2></div><p style='text-align:left; font-size: 13px; color: var(--text-secondary); margin-top: 10px;'>Bags stored</p><div class='progress-bar-container'><div class='progress-bar' style='width: " + percent + "%; background: " + barColor + "'></div></div>";
+                    container.appendChild(card);
+                });
+
+                if (!validInventoryFound) {
+                    container.innerHTML = "<div class='empty-state fade-in glow-border' style='grid-column: 1 / -1;'><div class='empty-icon pulse-anim'>⚠️</div><h3>Stock Depleted</h3><p>Your blood bags have all been distributed. Please schedule more donations.</p></div>";
+                }
+            } catch (e) { console.error(e); }
+        }
+
+        let globalDonors = [];
+
+        async function loadDonors() {
+            try {
+                const res = await fetch('/api/donors');
+                const data = await res.json();
+                globalDonors = data;
+                const tbody = document.getElementById('donors-table-body');
+                tbody.innerHTML = '';
+                data.forEach(donor => {
+                    const cleanAddress = donor.address ? donor.address : '<i style="color:var(--text-secondary)">No Address</i>';
+                    const lastDate = donor.last_donation && donor.last_donation !== "null" ? donor.last_donation : "-";
+                    const tr = document.createElement('tr');
+                    tr.className = 'fade-in';
+                    tr.innerHTML = "<td><div style='display:flex; flex-direction:column;'><span style='font-weight: 600; color: #fff'>" + donor.name + "</span><span style='font-size:12px; color:var(--text-secondary)'>ID: #" + donor.id + "</span></div></td><td><span class='table-badge'>" + donor.blood_group + "</span></td><td class='monospaced'>" + donor.contact + "</td><td class='address-cell'><span class='address-text' title='" + (donor.address || '').replace(/'/g, "\\'") + "'>" + cleanAddress + "</span><div><button class='btn-icon edit-donor-btn' style='white-space:nowrap' title='Edit Full Details' data-id='" + donor.id + "'>✎ Edit Details</button> <button class='btn-icon delete-donor-btn' style='white-space:nowrap; color: var(--accent-red); border-color: rgba(255, 71, 87, 0.3);' title='Delete Donor' data-id='" + donor.id + "'>🗑 Delete</button></div></td><td style='font-size:13px; color: var(--text-secondary);'>" + lastDate + "</td>";
+                    tbody.appendChild(tr);
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        function openEditDonor(id) {
+            const donor = globalDonors.find(d => d.id === id);
+            if (!donor) return;
+            document.getElementById('edit-donor-id').value = donor.id;
+            document.getElementById('ed-name').value = donor.name || '';
+            document.getElementById('ed-bg').value = donor.blood_group || 'A+';
+            document.getElementById('ed-contact').value = donor.contact || '';
+            document.getElementById('ed-email').value = donor.email || '';
+            document.getElementById('ed-address').value = donor.address || '';
+            document.getElementById('ed-last').value = (donor.last_donation && donor.last_donation !== "null") ? donor.last_donation : '';
+            openModal('edit-donor-modal');
+        }
+
+        async function submitDonorUpdate(e) {
+            e.preventDefault();
+            const payload = {
+                id: document.getElementById('edit-donor-id').value,
+                name: document.getElementById('ed-name').value,
+                blood_group: document.getElementById('ed-bg').value,
+                contact: document.getElementById('ed-contact').value,
+                email: document.getElementById('ed-email').value,
+                address: document.getElementById('ed-address').value,
+                last_donation_date: document.getElementById('ed-last').value
+            };
+
+            try {
+                const res = await fetch('/api/donors', { method: 'PUT', body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (data.success) {
+                    closeModal('edit-donor-modal');
+                    loadDonors();
+                } else { showResult("Error", data.error, true); }
+            } catch (err) { showResult("Error", "Network error.", true); }
+        }
+
+        async function loadRequests() {
+            try {
+                const res = await fetch('/api/requests');
+                const data = await res.json();
+                const tbody = document.getElementById('requests-table-body');
+                tbody.innerHTML = '';
+                data.forEach(req => {
+                    let isPending = req.status.includes("Pending");
+                    let statusClass = isPending ? "status-pending" : "status-approved";
+
+                    const role = sessionStorage.getItem('bloodlink_role');
+                    let actionBtn = "";
+                    
+                    if (role === 'Admin') {
+                        actionBtn = isPending ?
+                            "<button class='btn-icon action-btn fulfill-req-btn' data-id='" + req.id + "'>⚙️ Fulfill</button>" :
+                            "<span style='color:var(--text-secondary); font-size: 13px;'>✔ Done</span>";
+                        actionBtn += " <button class='btn-icon delete-request-btn' style='white-space:nowrap; color: var(--accent-red); border-color: rgba(255, 71, 87, 0.3); margin-left: 10px;' title='Delete Request' data-id='" + req.id + "'>🗑 Delete</button>";
+                    } else {
+                        actionBtn = isPending ? 
+                            "<span style='color:var(--text-secondary); font-size: 12px; font-style: italic;'>Admin Reviewing</span>" : 
+                            "<span style='color:var(--success); font-size: 12px;'>Verified ✔</span>";
+                    }
+
+                    const tr = document.createElement('tr');
+                    tr.className = 'fade-in';
+                    tr.innerHTML = "<td class='monospaced'>#" + req.id + "</td><td style='font-weight: 500'>" + req.hospital + "</td><td><span class='table-badge'>" + req.blood_group + "</span></td><td style='font-weight:bold'>" + req.quantity + "</td><td style='font-size:13px'>" + req.date + "</td><td><span class='status-indicator " + statusClass + "'>" + req.status + "</span></td><td>" + actionBtn + "</td>";
+                    tbody.appendChild(tr);
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        async function deleteDonor(id) {
+            if(!confirm("Are you sure you want to delete this donor?")) return;
+            try {
+                const res = await fetch('/api/delete_donor', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ id: id }) });
+                const data = await res.json();
+                if (data.success) {
+                    showResult("Deleted", "Donor has been removed.");
+                    loadDonors();
+                    loadStats();
+                } else { showResult("Error", data.error, true); }
+            } catch (err) { showResult("Error", "Network error.", true); }
+        }
+
+        async function deleteRequest(id) {
+            if(!confirm("Are you sure you want to delete this request?")) return;
+            try {
+                const res = await fetch('/api/delete_request', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ id: id }) });
+                const data = await res.json();
+                if (data.success) {
+                    showResult("Deleted", "Request has been removed.");
+                    loadRequests();
+                    loadStats();
+                } else { showResult("Error", data.error, true); }
+            } catch (err) { showResult("Error", "Network error.", true); }
+        }
+
+        async function fulfillReq(reqId) {
+            try {
+                const res = await fetch('/api/fulfill_request', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ request_id: reqId }) });
+                const data = await res.json();
+                if (data.success) {
+                    showResult("Fulfilled!", data.message);
+                    loadRequests();
+                } else {
+                    showResult("Process Failed", data.message, true);
+                }
+            } catch (err) { showResult("Error", "Network Issue", true); }
+        }
+
+        // Event delegation for dynamically created buttons
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('[data-id]');
+            if (!btn) return;
+            const id = parseInt(btn.dataset.id);
+
+            if (btn.classList.contains('delete-donor-btn')) {
+                deleteDonor(id);
+            } else if (btn.classList.contains('delete-request-btn')) {
+                deleteRequest(id);
+            } else if (btn.classList.contains('fulfill-req-btn')) {
+                fulfillReq(id);
+            } else if (btn.classList.contains('edit-donor-btn')) {
+                openEditDonor(id);
+            }
+        });
+
+        async function submitDonor(e) {
+            e.preventDefault();
+            const payload = {
+                name: document.getElementById('d-name').value,
+                blood_group: document.getElementById('d-bg').value,
+                contact: document.getElementById('d-contact').value,
+                email: document.getElementById('d-email').value,
+                address: document.getElementById('d-address').value,
+                last_donation_date: document.getElementById('d-last').value
+            };
+            const res = await fetch('/api/donors', { method: 'POST', body: JSON.stringify(payload) });
+            const data = await res.json();
+            if (data.success) {
+                closeModal('donor-modal');
+                document.getElementById('donor-form').reset();
+                loadDonors();
+                showResult("Donor Registered!", "The donor is now in the database.");
+            } else { showResult("Error", data.error, true); }
+        }
+
+        async function loadUsers() {
+            try {
+                const res = await fetch('/api/users');
+                const data = await res.json();
+                const tbody = document.getElementById('users-table-body');
+                tbody.innerHTML = '';
+                data.forEach(user => {
+                    const deleteBtn = user.username.toLowerCase() === 'admin' ? 
+                        '<span style="color:var(--text-secondary);font-size:12px italic">System Account</span>' :
+                        '<button class="btn-icon delete-user-btn" style="color:var(--accent-red)" data-id="' + user.id + '">🗑 Delete</button>';
+                    
+                    const tr = document.createElement('tr');
+                    tr.className = 'fade-in';
+                    tr.innerHTML = "<td class='monospaced'>#" + user.id + "</td><td style='font-weight:600'>" + user.username + "</td><td><span class='table-badge'>" + user.role + "</span></td><td>" + deleteBtn + "</td>";
+                    tbody.appendChild(tr);
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        async function submitUser(e) {
+            e.preventDefault();
+            const payload = {
+                username: document.getElementById('u-username').value,
+                password: document.getElementById('u-password').value,
+                role: document.getElementById('u-role').value
+            };
+            try {
+                const res = await fetch('/api/users', { method: 'POST', body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (data.success) {
+                    closeModal('user-modal');
+                    loadUsers();
+                    e.target.reset();
+                    showResult("Account Created!", "The user can now login with these credentials.");
+                } else { showResult("Error", data.error, true); }
+            } catch (err) { showResult("Error", "Network error.", true); }
+        }
+
+        async function deleteUser(id) {
+            if(!confirm("Are you sure? This will remove access for this user.")) return;
+            try {
+                const res = await fetch('/api/delete_user', { 
+                    method: 'POST', 
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ id: id }) 
+                });
+                const data = await res.json();
+                if (data.success) {
+                    loadUsers();
+                    showResult("Account Removed", "User access has been permanently revoked.");
+                } else { showResult("Error", data.error, true); }
+            } catch (err) { showResult("Error", "Server Communication Failed", true); }
+        }
+
+        async function submitDonation(e) {
+            e.preventDefault();
+            const payload = {
+                donor_id: document.getElementById('don-donor-id').value,
+                quantity: document.getElementById('don-qty').value
+            };
+            const res = await fetch('/api/donations', { method: 'POST', body: JSON.stringify(payload) });
+            const data = await res.json();
+            if (data.success) {
+                showResult("Successful Transaction!", "Blood inventory safely updated in SQLite.");
+                document.getElementById('donation-form').reset();
+            } else {
+                showResult("Error", data.error, true);
+            }
+        }
+
+        async function submitRequest(e) {
+            e.preventDefault();
+            const role = sessionStorage.getItem('bloodlink_role');
+            const payload = {
+                blood_group: document.getElementById('r-bg').value,
+                quantity: document.getElementById('r-qty').value,
+                hospital_id: sessionStorage.getItem('bloodlink_hospital_id') || 0,
+                requester_id: sessionStorage.getItem('bloodlink_requester_id') || 0,
+                is_emergency: document.getElementById('r-emergency') ? document.getElementById('r-emergency').checked : false
+            };
+            
+            // Fallback for admin/others
+            if (role === 'Admin') {
+                payload.hospital = document.getElementById('r-hosp').value;
+            }
+
+            const res = await fetch('/api/requests', { method: 'POST', body: JSON.stringify(payload) });
+            const data = await res.json();
+            if (data.success) {
+                closeModal('request-modal');
+                document.getElementById('request-form').reset();
+                loadRequests();
+
+                if (data.status && data.status.includes("Pending")) {
+                    showResult("Low Stock Alert!", "Request Submitted, but it is marked as PENDING. You do not have enough blood bags of this type. Please record a donation, then click Fulfill.");
+                } else {
+                    showResult("Approved!", "Request was instantly fulfilled using available inventory.");
+                }
+                
+                // Refresh local view
+                if (role === 'Hospital') loadHospitalPortal();
+                if (role === 'Requester') loadRequesterPortal();
+            } else { showResult("Error", data.error || data.message || "Failed to submit request", true); }
+        }
+
+        async function loadHospitalPortal() {
+            const hId = sessionStorage.getItem('bloodlink_hospital_id');
+            if (!hId) return;
+
+            try {
+                // Fetch all hospitals to find current one (could be optimized with a specific endpoint)
+                const resH = await fetch('/api/hospitals');
+                const hospitals = await resH.json();
+                const myHosp = hospitals.find(h => h.id == hId);
+                
+                if (myHosp) {
+                    document.getElementById('hosp-name-display').innerText = myHosp.name;
+                    document.getElementById('r-hosp').value = myHosp.name; // Auto-fill request modal
+                    document.getElementById('hosp-active-requests').innerText = myHosp.total_requests;
+                }
+
+                // Fetch all requests and filter for this hospital
+                const resR = await fetch('/api/requests');
+                const requests = await resR.json();
+                const myRequests = requests.filter(r => r.hospital === myHosp.name);
+
+                const tbody = document.getElementById('hosp-requests-table');
+                tbody.innerHTML = '';
+                myRequests.forEach(req => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'fade-in';
+                    tr.innerHTML = `<td>${req.date}</td><td><span class='table-badge'>${req.blood_group}</span></td><td style='font-weight:bold'>${req.quantity}</td><td><span class='status-indicator ${req.status.includes("Pending") ? "status-pending" : "status-approved"}'>${req.status}</span></td>`;
+                    tbody.appendChild(tr);
+                });
+            } catch (e) { console.error(e); }
+        }
+
+        window.onload = () => {
+            if (sessionStorage.getItem('bloodlink_auth') === 'true') {
+                showApp();
+            } else {
+                document.getElementById('landing-page').style.display = 'flex';
+                document.getElementById('app-container').style.display = 'none';
+                loadPublicData();
+            }
+
+            setInterval(() => {
+                if (sessionStorage.getItem('bloodlink_auth') === 'true') {
+                    const activeTab = document.querySelector('.tab-pane.active');
+                    if (activeTab) {
+                        const id = activeTab.id;
+                        if (id === 'dashboard') { loadStats(); loadInventory(); }
+                        else if (id === 'donors') loadDonors();
+                        else if (id === 'requests') loadRequests();
+                        else if (id === 'users') loadUsers();
+                        else if (id === 'donor-dashboard') { loadStats(); loadMyDonations(); }
+                        else if (id === 'hospital-dashboard') { loadHospitalPortal(); }
+                        else if (id === 'requester-dashboard') { loadRequesterPortal(); }
+                    }
+                } else {
+                    loadPublicData();
+                }
+            }, 5000);
+        };
+
+        function showApp() {
+            const role = sessionStorage.getItem('bloodlink_role');
+            const donorId = sessionStorage.getItem('bloodlink_donor_id');
+            const hospId = sessionStorage.getItem('bloodlink_hospital_id');
+            const reqId = sessionStorage.getItem('bloodlink_requester_id');
+            
+            document.getElementById('landing-page').style.display = 'none';
+            document.getElementById('app-container').style.display = 'flex';
+            
+            const isAdmin = (role === 'Admin');
+            const isDonor = (role === 'Donor');
+            const isHospital = (role === 'Hospital');
+            const isRequester = (role === 'Requester');
+ 
+            // Set Sidebar Visibility
+            document.getElementById('nav-dashboard').style.display = (isAdmin || isDonor || isHospital || isRequester) ? 'flex' : 'none';
+            document.getElementById('nav-donors').style.display = isAdmin ? 'flex' : 'none';
+            document.getElementById('nav-donations').style.display = isAdmin ? 'flex' : 'none';
+            document.getElementById('nav-requests').style.display = (isAdmin || isHospital || isRequester) ? 'flex' : 'none';
+            document.getElementById('nav-users').style.display = isAdmin ? 'flex' : 'none';
+            document.getElementById('nav-activity').style.display = isAdmin ? 'flex' : 'none';
+            
+            document.getElementById('nav-donor-portal').style.display = isDonor ? 'flex' : 'none';
+            document.getElementById('nav-hospital-portal').style.display = isHospital ? 'flex' : 'none';
+            document.getElementById('nav-requester-portal').style.display = (isRequester || role === 'Patient') ? 'flex' : 'none';
+ 
+            // Automatic Tab Selection
+            if (isDonor) {
+                if (document.getElementById('donor-id-display')) document.getElementById('donor-id-display').innerText = donorId;
+                showTab('donor-dashboard');
+            } else if (isHospital) {
+                if (document.getElementById('hosp-id-display')) document.getElementById('hosp-id-display').innerText = hospId;
+                showTab('hospital-dashboard');
+            } else if (isRequester || role === 'Patient') {
+                if (document.getElementById('patient-id-display')) document.getElementById('patient-id-display').innerText = reqId;
+                showTab('requester-dashboard');
+            } else {
+                showTab('dashboard');
+            }
+        }
+
+        function openPortal(role, action) {
+            document.querySelector('.public-dashboard').style.display = 'none';
+            if (action === 'login') {
+                document.getElementById('donor-login-card').style.display = 'block';
+                document.getElementById('login-portal-title').innerText = role + ' Access';
+                sessionStorage.setItem('current_portal_role', role);
+            } else {
+                document.getElementById('register-card').style.display = 'block';
+                setRegRole(role);
+            }
+        }
+
+        function closePortal() {
+            document.querySelector('.public-dashboard').style.display = 'block';
+            document.getElementById('donor-login-card').style.display = 'none';
+            document.getElementById('register-card').style.display = 'none';
+        }
+
+        function setRegRole(role) {
+            document.getElementById('reg-role').value = role;
+            document.querySelectorAll('.btn-role').forEach(b => b.classList.remove('active'));
+            const btnId = 'role-' + role.toLowerCase();
+            const btn = document.getElementById(btnId);
+            if(btn) btn.classList.add('active');
+            document.getElementById('reg-bg-group').style.display = (role === 'Donor' || role === 'Patient' || role === 'Requester') ? 'block' : 'none';
+        }
+
+        async function submitRegister(e) {
+            e.preventDefault();
+            const payload = {
+                role: document.getElementById('reg-role').value,
+                name: document.getElementById('reg-name').value,
+                blood_group: document.getElementById('reg-bg').value,
+                contact: document.getElementById('reg-contact').value,
+                email: document.getElementById('reg-email').value,
+                address: document.getElementById('reg-address').value,
+                username: document.getElementById('reg-user').value,
+                password: document.getElementById('reg-pass').value
+            };
+            try {
+                const res = await fetch('/api/register', { method: 'POST', body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (data.success) {
+                    closePortal();
+                    showResult("Welcome!", "Your account is created. You can now login as a " + payload.role + ".");
+                    e.target.reset();
+                } else { showResult("Error", data.error || "Registration failed.", true); }
+            } catch (e) { showResult("Error", "Network Issue", true); }
+        }
+
+        async function loadMyDonations() {
+            const donorId = sessionStorage.getItem('bloodlink_donor_id');
+            const myName = sessionStorage.getItem('bloodlink_name');
+            if(!donorId || donorId == "0") return;
+
+            // Set personalized greeting
+            if(document.getElementById('hello-name')) document.getElementById('hello-name').innerText = myName;
+
+            try {
+                const res = await fetch('/api/my_donations', { method: 'POST', body: JSON.stringify({ donor_id: donorId }) });
+                const data = await res.json();
+                const tbody = document.getElementById('my-donations-table');
+                if(tbody) {
+                    tbody.innerHTML = '';
+                    data.forEach(d => {
+                        const tr = document.createElement('tr');
+                        tr.className = 'fade-in';
+                        tr.innerHTML = `<td>${d.date}</td><td><span class='table-badge'>${d.qty} Bags</span></td><td><span class="status-indicator status-approved">Recorded</span></td>`;
+                        tbody.appendChild(tr);
+                    });
+                }
+
+                // Update Impact Score (3 lives per donation bag)
+                let totalBags = data.reduce((sum, d) => sum + parseInt(d.qty), 0);
+                if(document.getElementById('impact-score')) document.getElementById('impact-score').innerText = totalBags * 3;
+
+                // Refresh donor specific profile data
+                const dRes = await fetch('/api/donors');
+                const dData = await dRes.json();
+                const me = dData.find(d => d.id == donorId);
+                if(me) {
+                    if(document.getElementById('my-blood-group')) document.getElementById('my-blood-group').innerText = me.blood_group;
+                    
+                    // Calculation for Eligibility Progress Bar
+                    const statusEl = document.getElementById('eligibility-status');
+                    const progressEl = document.getElementById('eligibility-progress');
+                    
+                    if(!me.last_donation || me.last_donation === "None") {
+                        statusEl.innerText = "Ready to Save Lives!";
+                        progressEl.style.width = "100%";
+                    } else {
+                        const lastDate = new Date(me.last_donation);
+                        const today = new Date();
+                        const diffTime = Math.abs(today - lastDate);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        
+                        if(diffDays >= 56) {
+                            statusEl.innerText = "Ready to Save Lives!";
+                            progressEl.style.width = "100%";
+                        } else {
+                            const daysLeft = 56 - diffDays;
+                            statusEl.innerText = `${daysLeft} Days to Wait`;
+                            progressEl.style.width = `${(diffDays / 56) * 100}%`;
+                            progressEl.style.background = "var(--warning)";
+                        }
+                    }
+                }
+                
+                // Update Donor Activity
+                const actList = document.getElementById('donor-activity-list');
+                if(actList) {
+                    actList.innerHTML = `<div class="activity-item fade-in"><div class="activity-dot" style="background: var(--accent-purple);"></div><div class="activity-content"><h4>Portal Active</h4><span>Dashboard synchronized</span></div></div>`;
+                    data.slice(0, 3).forEach(d => {
+                        actList.innerHTML += `
+                            <div class="activity-item fade-in">
+                                <div class="activity-dot" style="background: var(--success);"></div>
+                                <div class="activity-content">
+                                    <h4>Blood Donation</h4>
+                                    <span>Contributed ${d.qty} bag(s) on ${d.date}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            } catch(err) { console.error("History load error", err); }
+        }
+
+        async function submitDonorDonation(e) {
+            e.preventDefault();
+            const donorId = sessionStorage.getItem('bloodlink_donor_id');
+            const qty = document.getElementById('d-don-qty').value;
+
+            if(!donorId || donorId == "0") {
+                showResult("Error", "Donor session not found. Please re-login.", true);
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/donations', { 
+                    method: 'POST', 
+                    body: JSON.stringify({ donor_id: donorId, quantity: qty }) 
+                });
+                const data = await res.json();
+                
+                if (data.success) {
+                    showResult("Success!", data.message || "Donation recorded successfully. Thank you for your contribution!");
+                    e.target.reset();
+                    loadMyDonations();
+                    loadPublicData(); // Refresh global inventory stats
+                } else if (data.ineligible) {
+                    showResult("Eligibility Wait", data.error, true);
+                } else {
+                    showResult("Error", data.error || "Failed to record donation", true);
+                }
+            } catch (err) {
+                showResult("Error", "Network error occurred while recording donation", true);
+            }
+        }
+
+        async function loadPublicData() {
+            try {
+                // Public Stats
+                const sRes = await fetch('/api/stats');
+                const stats = await sRes.json();
+                document.getElementById('pub-stat-bags').innerText = stats.total_bags;
+                document.getElementById('pub-stat-donors').innerText = stats.total_donors;
+
+                // Public Inventory
+                const iRes = await fetch('/api/inventory');
+                const data = await iRes.json();
+                const container = document.getElementById('pub-inventory-container');
+                container.innerHTML = '';
+                data.forEach(item => {
+                    if (item.quantity > 0) {
+                        const card = document.createElement('div');
+                        card.className = 'blood-card glass-panel fade-in';
+                        card.style.padding = '10px';
+                        card.innerHTML = `<div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span class="bg-badge" style="padding:4px 8px; font-size:12px;">${item.blood_group}</span>
+                            <b style="color:var(--accent-blue)">${item.quantity} Bags</b>
+                        </div>`;
+                        container.appendChild(card);
+                    }
+                });
+            } catch (e) { }
+        }
+
+        function handleLogout() {
+            sessionStorage.removeItem('bloodlink_auth');
+            location.reload();
+        }
+
+        async function submitLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('l-user').value;
+            const pass = document.getElementById('l-pass').value;
+            const errEl = document.getElementById('login-error');
+            errEl.style.display = 'none';
+
+            try {
+                const res = await fetch('/api/login', { method: 'POST', body: JSON.stringify({ username: user, password: pass }) });
+                const data = await res.json();
+                if (data.success) {
+                    sessionStorage.setItem('bloodlink_auth', 'true');
+                    sessionStorage.setItem('bloodlink_user', data.user || document.getElementById('l-user').value);
+                    sessionStorage.setItem('bloodlink_role', data.role);
+                    sessionStorage.setItem('bloodlink_donor_id', data.donor_id || 0);
+                    sessionStorage.setItem('bloodlink_hospital_id', data.hospital_id || 0);
+                    sessionStorage.setItem('bloodlink_requester_id', data.requester_id || 0);
+                    sessionStorage.setItem('bloodlink_name', data.name || 'User');
+                    sessionStorage.setItem('bloodlink_bg', data.blood_group || '');
+                    sessionStorage.setItem('bloodlink_email', data.email || '');
+                    showApp();
+                } else {
+                    errEl.innerText = data.error || "Login failed";
+                    errEl.style.display = 'block';
+                }
+            } catch (e) {
+                errEl.innerText = "Network Error";
+                errEl.style.display = 'block';
+            }
+        }
+
+        async function loadRequesterPortal() {
+            const reqId = sessionStorage.getItem('bloodlink_requester_id');
+            const myName = sessionStorage.getItem('bloodlink_name');
+            const myBg = sessionStorage.getItem('bloodlink_bg');
+            if (!reqId) return;
+
+            // Set personalized greeting in header (if you add a greeting div to requester portal too)
+            if (document.getElementById('patient-name-display')) document.getElementById('patient-name-display').innerText = myName;
+            if (document.getElementById('patient-id-display')) document.getElementById('patient-id-display').innerText = reqId;
+
+            // Default compatibility tool to patient's own BG
+            const compSelect = document.getElementById('comp-bg-select');
+            if (myBg && compSelect && !compSelect.value) {
+                compSelect.value = myBg;
+            }
+
+            try {
+                const resR = await fetch('/api/requests');
+                const requests = await resR.json();
+                
+                const tbody = document.getElementById('req-requests-table');
+                if (!tbody) return;
+                tbody.innerHTML = '';
+                
+                // Filter requests by name for this requester
+                const myRequests = requests.filter(r => r.hospital === myName);
+                myRequests.forEach(req => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'fade-in';
+                    tr.innerHTML = `<td>${req.date}</td><td><span class='table-badge'>${req.blood_group}</span></td><td style='font-weight:bold'>${req.quantity}</td><td><span class='status-indicator ${req.status.includes("Pending") ? "status-pending" : "status-approved"}'>${req.status}</span></td>`;
+                    tbody.appendChild(tr);
+                });
+
+                // Update activity list
+                const actList = document.getElementById('patient-activity-list');
+                if (actList) {
+                    actList.innerHTML = `
+                        <div class="activity-item fade-in">
+                            <div class="activity-dot" style="background: var(--accent-blue); box-shadow: 0 0 8px var(--accent-blue);"></div>
+                            <div class="activity-content">
+                                <h4>Session Started</h4>
+                                <span>Welcome back, ${myName}.</span>
+                            </div>
+                        </div>
+                    `;
+                    myRequests.slice(0, 3).forEach(r => {
+                        actList.innerHTML += `
+                            <div class="activity-item fade-in">
+                                <div class="activity-dot" style="background: ${r.status.includes('Pending') ? 'var(--warning)' : 'var(--success)'};"></div>
+                                <div class="activity-content">
+                                    <h4>Blood Request #${r.id}</h4>
+                                    <span>Status: ${r.status} (${r.blood_group})</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                updateCompatibilityView();
+            } catch (e) { console.error(e); }
+        }
+
+        async function submitQuickRequest(e) {
+            e.preventDefault();
+            const payload = {
+                blood_group: document.getElementById('q-req-bg').value,
+                quantity: document.getElementById('q-req-qty').value,
+                hospital_id: 0,
+                requester_id: sessionStorage.getItem('bloodlink_requester_id') || 0,
+                is_emergency: document.getElementById('q-req-emergency').checked
+            };
+            const name = sessionStorage.getItem('bloodlink_name');
+            payload.hospital = name;
+
+            try {
+                const res = await fetch('/api/requests', { method: 'POST', body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (data.success) {
+                    showResult("Request Placed", data.status.includes('Approved') ? "Instantly Approved!" : "Marked as Pending.");
+                    e.target.reset();
+                    loadRequesterPortal();
+                } else { showResult("Error", data.error, true); }
+            } catch (err) { showResult("Error", "Failed to submit", true); }
+        }
+
+        async function openProfileModal() {
+            const role = sessionStorage.getItem('bloodlink_role');
+            
+            document.getElementById('p-name').value = sessionStorage.getItem('bloodlink_name') || "";
+            document.getElementById('p-contact').value = sessionStorage.getItem('bloodlink_contact') || "";
+            document.getElementById('p-email').value = sessionStorage.getItem('bloodlink_email') || "";
+            document.getElementById('p-address').value = sessionStorage.getItem('bloodlink_address') || "";
+            
+            if(role === 'Donor') {
+                document.getElementById('p-bg-group').style.display = 'none';
+            } else if(role === 'Requester') {
+                document.getElementById('p-bg-group').style.display = 'block';
+                document.getElementById('p-bg').value = sessionStorage.getItem('bloodlink_bg') || "A+";
+            }
+            
+            openModal('profile-modal');
+        }
+
+        async function submitProfileUpdate(e) {
+            e.preventDefault();
+            const role = sessionStorage.getItem('bloodlink_role');
+            const donorId = sessionStorage.getItem('bloodlink_donor_id');
+            const reqId = sessionStorage.getItem('bloodlink_requester_id');
+            const user = sessionStorage.getItem('bloodlink_user');
+            
+            const payload = {
+                role: role,
+                id: (role === 'Donor') ? donorId : reqId,
+                name: document.getElementById('p-name').value,
+                blood_group: document.getElementById('p-bg').value,
+                contact: document.getElementById('p-contact').value,
+                email: document.getElementById('p-email').value,
+                address: document.getElementById('p-address').value,
+                username: user
+            };
+
+            try {
+                const res = await fetch('/api/update_profile', { method: 'POST', body: JSON.stringify(payload) });
+                const data = await res.json();
+                if (data.success) {
+                    sessionStorage.setItem('bloodlink_name', payload.name);
+                    sessionStorage.setItem('bloodlink_contact', payload.contact);
+                    sessionStorage.setItem('bloodlink_email', payload.email);
+                    sessionStorage.setItem('bloodlink_address', payload.address);
+                    if(role === 'Requester') sessionStorage.setItem('bloodlink_bg', payload.blood_group);
+                    
+                    closeModal('profile-modal');
+                    showResult("Success", "Profile updated successfully!");
+                    
+                    // Refresh UI
+                    if(role === 'Donor') loadMyDonations();
+                    else loadRequesterPortal();
+                } else {
+                    showResult("Error", data.error || "Update failed", true);
+                }
+            } catch (err) {
+                showResult("Error", "Network error", true);
+            }
+        }
+
+        async function updateDonorCompatibilityView() {
+            const bgEl = document.getElementById('donor-comp-bg-select');
+            if (!bgEl) return;
+            const bg = bgEl.value;
+            const container = document.getElementById('donor-compatibility-results');
+            if(!container) return;
+            
+            try {
+                const res = await fetch('/api/compatibility', { method: 'POST', body: JSON.stringify({ blood_group: bg }) });
+                const data = await res.json();
+                container.innerHTML = '';
+                data.compatible.forEach(item => {
+                    const div = document.createElement('div');
+                    div.className = 'glass-panel fade-in';
+                    div.style.padding = '8px 12px';
+                    div.style.display = 'flex';
+                    div.style.justifyContent = 'space-between';
+                    div.innerHTML = `<span>Group <b>${item.blood_group}</b></span> <span>${item.quantity} Bags</span>`;
+                    container.appendChild(div);
+                });
+            } catch (e) { }
+        }
+
+        async function updateCompatibilityView() {
+            const bg = document.getElementById('comp-bg-select').value;
+            const container = document.getElementById('compatibility-results');
+            container.innerHTML = '<div class="pulse-anim" style="text-align:center; padding: 20px;">🔍 Analyzing life-saving compatibility...</div>';
+            
+            try {
+                const res = await fetch('/api/compatibility', { method: 'POST', body: JSON.stringify({ blood_group: bg }) });
+                const data = await res.json();
+                
+                container.innerHTML = `
+                    <div class="glass-panel" style="padding: 20px; margin-bottom: 24px; border-left: 4px solid var(--accent-blue);">
+                        <h4 style="margin-bottom: 8px; color: var(--accent-blue);">Donor Compatibility</h4>
+                        <p style="font-size: 14px; opacity: 0.8;">Patients with group <b>${bg}</b> can safely receive blood from the following groups:</p>
+                        
+                        <div class="compatibility-grid" style="margin-top: 20px;">
+                            ${data.compatible.map(item => {
+                                const isAvailable = item.quantity > 0;
+                                return `
+                                    <div class="comp-item ${isAvailable ? 'active' : 'disabled'}" onclick="if(${isAvailable}) requestCompatibleGroup('${item.blood_group}')">
+                                        <b style="font-size: 18px;">${item.blood_group}</b>
+                                        <span style="font-size: 11px;">${item.quantity} Bags</span>
+                                        ${isAvailable ? '<span style="font-size:9px; font-weight:800;">READY</span>' : '<span style="font-size:9px;">EMPTY</span>'}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                if (data.compatible.length === 0) {
+                    container.innerHTML = '<div class="glass-panel" style="padding:20px; text-align:center;">No compatible groups found.</div>';
+                }
+            } catch (e) { container.innerHTML = '<div class="glass-panel" style="padding:20px; color:var(--accent-red);">Compatibility check failed.</div>'; }
+        }
+
+        function requestCompatibleGroup(bg) {
+            document.getElementById('r-bg').value = bg;
+            document.getElementById('r-hosp').value = sessionStorage.getItem('bloodlink_name') || '';
+            openModal('request-modal');
+        }
+    </script>
+</body>
+
+</html>

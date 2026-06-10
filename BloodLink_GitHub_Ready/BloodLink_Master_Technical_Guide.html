@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodLink | Master Technical Documentation & Full Source Code</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        :root {
+            --bg: #0b0f1a;
+            --card: #151b2d;
+            --sidebar: #0e1321;
+            --accent: #ff4757;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border: rgba(255, 255, 255, 0.08);
+            --code-bg: #000000;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+        }
+
+        /* Navigation Sidebar */
+        aside {
+            width: 320px;
+            height: 100vh;
+            background: var(--sidebar);
+            position: fixed;
+            padding: 40px 24px;
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+        }
+
+        aside h1 {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        nav h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin: 24px 0 12px;
+            letter-spacing: 1px;
+        }
+
+        nav ul { list-style: none; }
+        nav li { margin-bottom: 8px; }
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            display: block;
+            padding: 10px 14px;
+            border-radius: 8px;
+        }
+        nav a:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Content Area */
+        main {
+            margin-left: 320px;
+            width: calc(100% - 320px);
+            padding: 80px 100px;
+            max-width: 1400px;
+        }
+
+        section { margin-bottom: 100px; scroll-margin-top: 50px; }
+
+        .hero { margin-bottom: 80px; }
+        .hero h1 { font-size: 4rem; font-weight: 800; margin-bottom: 10px; }
+        .hero p { font-size: 1.3rem; color: var(--accent); font-weight: 600; }
+
+        h2.section-title {
+            font-size: 2.2rem;
+            margin-bottom: 30px;
+            border-left: 5px solid var(--accent);
+            padding-left: 20px;
+        }
+
+        p { margin-bottom: 20px; color: #cbd5e1; font-size: 1.1rem; }
+
+        /* Code Containers */
+        .code-container {
+            background: var(--code-bg);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin: 30px 0;
+            position: relative;
+        }
+        .code-container::before {
+            content: attr(data-file);
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--accent);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        pre {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88rem;
+            overflow-x: auto;
+            color: #d1d5db;
+        }
+
+        /* Explanation Boxes */
+        .explanation {
+            background: var(--card);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-top: 20px;
+        }
+        .explanation h4 {
+            color: var(--accent);
+            margin: 20px 0 10px 0;
+            font-size: 1.2rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(255, 71, 87, 0.1);
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-right: 8px;
+        }
+
+        /* Table Styles */
+        table { width: 100%; border-collapse: collapse; margin: 30px 0; }
+        th, td { text-align: left; padding: 15px; border-bottom: 1px solid var(--border); }
+        th { color: var(--accent); text-transform: uppercase; font-size: 0.85rem; }
+
+        @media (max-width: 1100px) {
+            aside { display: none; }
+            main { margin-left: 0; width: 100%; padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside>
+        <h1>BLOODLINK</h1>
+        <nav>
+            <h3>1. The Blueprint</h3>
+            <ul>
+                <li><a href="#schema">Full SQL Schema</a></li>
+                <li><a href="#database-manager">Database Manager</a></li>
+            </ul>
+
+            <h3>2. The Backend Brain</h3>
+            <ul>
+                <li><a href="#webserver-full">WebServer.java (Full Code)</a></li>
+                <li><a href="#routing">Routing & Setup</a></li>
+                <li><a href="#auth-logic">Authentication & Security</a></li>
+                <li><a href="#donor-logic">Donor & Eligibility Logic</a></li>
+                <li><a href="#request-logic">Blood Requests & Logic</a></li>
+                <li><a href="#inventory-logic">Inventory Management</a></li>
+            </ul>
+
+            <h3>3. Admin & Extensions</h3>
+            <ul>
+                <li><a href="#gui">Desktop GUI Code</a></li>
+                <li><a href="#authutils">AuthUtils Code</a></li>
+                <li><a href="#fixdb">FixDatabase Script</a></li>
+                <li><a href="#workflow">9. Full System Workflow</a></li>
+                <li><a href="#dbflow">10. Database Flow Map</a></li>
+                <li><a href="#dbexplorer">11. Database Explorer Tool</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main>
+        <div class="hero">
+            <h1>TECHNICAL MASTER MANUAL</h1>
+            <p>ELABORATE CODE BREAKDOWN & FULL SOURCE DOCUMENTATION</p>
+        </div>
+
+        <!-- SCHEMA SECTION -->
+        <section id="schema">
+            <h2 class="section-title">The Blueprint: Database Schema</h2>
+            <p>The foundation of the system is the SQLite database. Below is the full relational schema and a modular data map for each component.</p>
+            
+            <div class="code-container" data-file="schema.sql">
+<pre><code>CREATE TABLE IF NOT EXISTS Donors (
+    donor_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    blood_group TEXT NOT NULL,
+    contact_number TEXT,
+    email TEXT,
+    address TEXT,
+    last_donation_date DATE
+);
+
+CREATE TABLE IF NOT EXISTS Blood_Inventory (
+    blood_group TEXT PRIMARY KEY,
+    quantity_bags INTEGER DEFAULT 0
+);
+
+CREATE TABLE IF NOT EXISTS Hospitals (
+    hospital_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    contact_number TEXT,
+    address TEXT
+);
+
+CREATE TABLE IF NOT EXISTS Blood_Requests (
+    request_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    hospital_id INTEGER,
+    requester_id INTEGER,
+    blood_group_required TEXT NOT NULL,
+    quantity_needed INTEGER NOT NULL,
+    request_date DATE,
+    status TEXT,
+    is_emergency INTEGER DEFAULT 0,
+    FOREIGN KEY (hospital_id) REFERENCES Hospitals(hospital_id)
+);
+
+CREATE TABLE IF NOT EXISTS Users (
+    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    role TEXT DEFAULT 'Admin',
+    donor_id INTEGER,
+    hospital_id INTEGER
+);
+
+CREATE TABLE IF NOT EXISTS Activity_Log (
+    log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    action TEXT NOT NULL,
+    description TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+            </div>
+
+            <!-- MODULAR SCHEMA TABLES -->
+            <div class="explanation">
+                <h4>👤 People & Profiles</h4>
+                <table>
+                    <tr><th>Table</th><th>Key Columns</th><th>Purpose</th></tr>
+                    <tr><td><b>Donors</b></td><td>donor_id, name, blood_group, contact, last_donation_date</td><td>Profiles for people giving blood.</td></tr>
+                    <tr><td><b>Hospitals</b></td><td>hospital_id, name, contact, address</td><td>Partner medical institutions.</td></tr>
+                    <tr><td><b>Requesters</b></td><td>requester_id, name, blood_group, email, address</td><td>Individuals requesting blood.</td></tr>
+                </table>
+
+                <h4>📦 Inventory & Operations</h4>
+                <table>
+                    <tr><th>Table</th><th>Key Columns</th><th>Purpose</th></tr>
+                    <tr><td><b>Blood_Inventory</b></td><td>blood_group, quantity_bags</td><td>Live stock of each blood type.</td></tr>
+                    <tr><td><b>Blood_Requests</b></td><td>request_id, hospital_id, blood_group_required, status</td><td>Tracks orders and fulfillment.</td></tr>
+                    <tr><td><b>Donation_Records</b></td><td>donation_id, donor_id, donation_date, quantity</td><td>Historic log of all donations.</td></tr>
+                </table>
+
+                <h4>🔒 System & Security</h4>
+                <table>
+                    <tr><th>Table</th><th>Key Columns</th><th>Purpose</th></tr>
+                    <tr><td><b>Users</b></td><td>user_id, username, password_hash, role, donor_id</td><td>Credentials and profile linking.</td></tr>
+                    <tr><td><b>Activity_Log</b></td><td>log_id, action, description, timestamp</td><td>Audit trail for all system changes.</td></tr>
+                </table>
+            </div>
+        </section>
+
+        <!-- WEBSERVER.JAVA FULL EXPLANATION -->
+        <section id="webserver-full">
+            <h2 class="section-title">WebServer.java: Complete Breakdown</h2>
+            <p>The <b>WebServer.java</b> file is the most critical part of the application. It acts as the API Server that connects your website and your database.</p>
+
+            <div class="explanation">
+                <h4>1. Routing & Context Initialization</h4>
+                <p>The <code>main</code> method defines the entry points (Endpoints) for the web application. When you go to a URL like <code>/api/login</code>, the server knows exactly which "Handler" to wake up.</p>
+                <p><span class="tag">Technical Note</span> Uses <code>com.sun.net.httpserver</code> for a lightweight, zero-dependency server.</p>
+
+                <h4>2. Full Authentication & Register Flow</h4>
+                <p>Handlers: <b>LoginHandler</b> and <b>RegisterHandler</b>.</p>
+                <ul>
+                    <li><b>Hashing</b>: Passwords are hashed using SHA-256 before being compared to the database.</li>
+                    <li><b>Transactions</b>: Registration uses <code>conn.setAutoCommit(false)</code>. This ensures that if creating a Donor succeeds but creating their User login fails, the system rolls everything back to prevent broken data.</li>
+                </ul>
+
+                <h4>3. The 56-Day Rule (Donor Module)</h4>
+                <p>Handler: <b>DonationsHandler</b>.</p>
+                <p>Before allowing a donation, the backend runs a SQL calculation using <code>julianday()</code>. If <code>today - last_donation < 56</code>, the request is rejected with a 400 Error and a "Not Eligible" message.</p>
+            </div>
+
+            <div class="code-container" data-file="WebServer.java">
+<pre><code>package org.bloodbank;
+// Imports for HTTP, SQL, IO...
+
+public class WebServer {
+    public static void main(String[] args) throws Exception {
+        DatabaseManager.initializeDatabase();
+        HttpServer server = HttpServer.create(new InetSocketAddress(9091), 0);
+        
+        // Context Mapping
+        server.createContext("/", new StaticFileHandler());
+        server.createContext("/api/inventory", new InventoryHandler());
+        server.createContext("/api/donors", new DonorsHandler());
+        server.createContext("/api/requests", new RequestsHandler());
+        server.createContext("/api/login", new LoginHandler());
+        // ... (remaining contexts)
+
+        server.start();
+        System.out.println("Running on http://localhost:9091");
+    }
+
+    // HANDLER: Handles serving HTML/CSS/JS files
+    static class StaticFileHandler implements HttpHandler { ... }
+
+    // HANDLER: Admin Dashboard Stats (Counts everything)
+    static class StatsHandler implements HttpHandler {
+        public void handle(HttpExchange t) {
+            // Runs: SELECT COUNT(*) FROM Donors...
+            // Runs: SELECT SUM(quantity_bags) FROM Blood_Inventory...
+            // Sends total counts as JSON to the dashboard.
+        }
+    }
+
+    // HANDLER: The Blood Request Engine
+    static class RequestsHandler implements HttpHandler {
+        public void handle(HttpExchange t) {
+            // STEP 1: Check inventory available bags
+            // STEP 2: Logic: IF available >= requested THEN "Approved"
+            // STEP 3: If Approved, subtract from Blood_Inventory table.
+            // STEP 4: Insert record into Blood_Requests table.
+        }
+    }
+    
+    // ... (All other handlers follow this pattern)
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- DATABASE MANAGER -->
+        <section id="database-manager">
+            <h2 class="section-title">DatabaseManager.java: The Connector</h2>
+            <p>This class manages the lifecycle of the database connection. It ensures that the database is optimized and WAL (Write-Ahead Logging) is enabled for better speed.</p>
+            <div class="code-container" data-file="DatabaseManager.java">
+<pre><code>package org.bloodbank;
+import java.sql.*;
+
+public class DatabaseManager {
+    private static final String URL = "jdbc:sqlite:bloodbank.db";
+
+    public static Connection getConnection() throws SQLException {
+        Connection conn = DriverManager.getConnection(URL);
+        Statement s = conn.createStatement();
+        s.execute("PRAGMA journal_mode=WAL"); // Multi-user speed boost
+        return conn;
+    }
+
+    public static void initializeDatabase() {
+        // Reads schema.sql and builds tables automatically
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- ADMIN GUI SECTION -->
+        <section id="gui">
+            <h2 class="section-title">BloodBankGUI.java: The Admin Center</h2>
+            <p>This is the desktop application created in Swing. While the website is for patients and donors, this application is for the staff sitting at the front desk.</p>
+            <div class="code-container" data-file="BloodBankGUI.java">
+<pre><code>package org.bloodbank;
+import javax.swing.*;
+// Full UI Imports...
+
+public class BloodBankGUI extends JFrame {
+    public BloodBankGUI() {
+        setTitle("BloodBank Admin Console");
+        // TAB: Dashboard (Shows Inventory Grid)
+        // TAB: Donor List (Allows adding/deleting donors)
+        // TAB: Requests (Shows hospital orders)
+    }
+
+    private JPanel createDonorPanel() {
+        // Logic to refresh table: SELECT * FROM Donors
+        // Logic to delete donor: DELETE FROM Donors WHERE id=...
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- UTILITY SCRIPTS -->
+        <section id="authutils">
+            <h2 class="section-title">Authentication & Security: AuthUtils.java</h2>
+            <p>This utility handles the encryption logic for the entire system.</p>
+            <div class="code-container" data-file="AuthUtils.java">
+<pre><code>package org.bloodbank;
+import java.security.MessageDigest;
+
+public class AuthUtils {
+    public static String hashPassword(String password) {
+        // Uses SHA-256 algorithm to transform "mypassword" 
+        // into "a5b8c...". This is impossible to reverse.
+    }
+    
+    public static boolean authenticate(String user, String pass) {
+        // Compares user input with the hashed DB password.
+    }
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- WORKFLOW SECTION -->
+        <section id="workflow">
+            <h2 class="section-title">9. The Comprehensive System Workflow</h2>
+            <p>This section details the end-to-end technical life-cycle of data passing through the system, from the initial server launch to the delivery of blood to a hospital.</p>
+
+            <div class="explanation">
+                <h4>A. System Boot & Environment Setup</h4>
+                <p>When the Java application is executed, the <code>Main.java</code> entry point triggers three critical processes:</p>
+                <ol>
+                    <li><b>Persistence Check</b>: The <code>DatabaseManager</code> initializes the SQLite connection. It enables <code>PRAGMA journal_mode=WAL</code>, which is essential for "Write-Ahead Logging." This allows the Web Server and Desktop GUI to perform concurrent operations without locking the database file.</li>
+                    <li><b>Schema Enforcement</b>: The server reads <code>schema.sql</code> and runs <code>CREATE TABLE IF NOT EXISTS</code> commands. This ensures that the system can recover even if the database file is missing or corrupted.</li>
+                    <li><b>Interface Binding</b>: The <code>WebServer</code> binds to Port 9091 and initializes the <code>HttpServer</code> with 18 distinct API contexts.</li>
+                </ol>
+
+                <h4>B. The Donor Lifecycle (Supply Chain)</h4>
+                <p>How and when blood enters the repository is strictly controlled by software-defined medical rules:</p>
+                <ul>
+                    <li><b>Creation</b>: A donor registers via the <code>RegisterHandler</code>. A dual-entry is created: one in <code>Donors</code> (medical profile) and one in <code>Users</code> (security profile).</li>
+                    <li><b>Eligibility Guard</b>: When a donor attempts to give blood, the <code>DonationsHandler</code> queries the database using the <b>Julianday</b> function. This prevents human error by mathematically proving that at least 56 days have passed since the last entry.</li>
+                    <li><b>Inventory Increment</b>: Upon a successful donation, a <b>Database Transaction</b> ensures that the <code>Donation_Records</code> are updated simultaneously with the <code>Blood_Inventory</code>. If one fails, the other is rolled back (Atomic Operation).</li>
+                </ul>
+
+                <h4>C. The Request & Fulfillment Lifecycle (Demand Chain)</h4>
+                <p>The system treats every request as a state-managed entity:</p>
+                <ol>
+                    <li><b>Submission</b>: A patient or hospital submits a request via <code>/api/requests</code>.</li>
+                    <li><b>Real-Time Validation</b>: The server queries the <code>Blood_Inventory</code> table for the specific blood group.</li>
+                    <li><b>Status Assignment</b>:
+                        <ul>
+                            <li><b>Automatic Approval</b>: If <code>Stock >= Request</code>, the status is set to "Approved" and stock is immediately subtracted.</li>
+                            <li><b>Pending State</b>: If stock is low, the request is stored as "Pending (Low Stock)." It is then highlighted in red on the Admin Dashboard for manual intervention.</li>
+                            <li><b>Emergency Handling</b>: Requests marked for emergency bypass specific non-critical checks to ensure life-saving speed.</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>D. The Audit & Monitoring Core</h4>
+                <p>Because this is a medical application, accountability is paramount:</p>
+                <ul>
+                    <li><b>Audit Trail</b>: Every destructive action (e.g., deleting a donor or record) is caught by the handlers and passed to the <code>logActivity()</code> method. This records the action, actor, and precise microsecond in the <code>Activity_Log</code>.</li>
+                    <li><b>State Aggregation</b>: The <code>StatsHandler</code> provides the "Pulse" of the system. It runs aggregate queries (SUM, COUNT) so that managers can see real-time trends instead of raw table data.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- DATABASE FLOW SECTION -->
+        <section id="dbflow">
+            <h2 class="section-title">10. Visual Database Flow & Logic</h2>
+            <p>This section provides a high-level visual representation of how data (units, profiles, and logs) moves through the relational repository during a typical operational cycle.</p>
+            
+            <div class="explanation">
+                <h4>System Architecture Overview</h4>
+                <div style="text-align: center; margin: 30px 0;">
+                    <img src="/C:/Users/gkgok/.gemini/antigravity/brain/faca61a5-effd-452e-95ec-a90a6e37b050/bloodbank_database_flow_diagram_1775367655078.png" alt="Database Flow Diagram" style="max-width: 100%; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.5);">
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 10px;">Fig 10.1: Professional Database Flow Visualization</p>
+                </div>
+
+                <h4>Technical Data Flow Logic</h4>
+                <ol>
+                    <li><b>Supply Path (Input)</b>:
+                        <ul>
+                            <li><b>Donor Profiling</b>: Data is ingested into the <code>Donors</code> table.</li>
+                            <li><b>Unit Registration</b>: A physical bag of blood is registered in <code>Donation_Records</code> and linked to the donor's ID.</li>
+                            <li><b>Inventory Influx</b>: An <b>Atomic SQL Update</b> increments the specific group count in the <code>Blood_Inventory</code> table to maintain real-time accuracy.</li>
+                        </ul>
+                    </li>
+                    <li><b>Demand Path (Output)</b>:
+                        <ul>
+                            <li><b>Submission</b>: Hospital or patient requests are stored in the <code>Blood_Requests</code> table.</li>
+                            <li><b>Inventory Check</b>: The backend performs a lookup in the <code>Blood_Inventory</code> table for available units.</li>
+                            <li><b>State Transition</b>: If approved, an <b>Atomic SQL Update</b> subtracts from the inventory and sets the status to "Approved."</li>
+                        </ul>
+                    </li>
+                    <li><b>Security & Audit Trail</b>:
+                        <ul>
+                            <li><b>Accountability</b>: Every state transition (Registration, Donation, Approval) is permanently recorded in the <code>Activity_Log</code>.</li>
+                            <li><b>Relational Constraints</b>: Foreign keys prevent the deletion of a donor who has historic donation records, preserving data integrity for medical history.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- DATABASE EXPLORER SECTION -->
+        <section id="dbexplorer">
+            <h2 class="section-title">11. Database Explorer Tool</h2>
+            <p>To provide a user-friendly way to inspect the live data without using external SQL software, a custom Java utility was developed to export the entire repository into a searchable HTML report.</p>
+            
+            <div class="explanation">
+                <h4>How the Explorer Works</h4>
+                <p>The <code>DatabaseExplorer.java</code> class uses **JDBC Metadata** to automatically discover every table and column in your SQLite file. It performs a "Deep Crawl" of the data and generates a clean, responsive HTML view.</p>
+
+                <div class="code-container" data-file="DatabaseExplorer.java">
+<pre><code>// Example logic:
+DatabaseMetaData metaData = conn.getMetaData();
+ResultSet tables = metaData.getTables(null, null, "%", new String[]{"TABLE"});
+while (tables.next()) {
+    String tableName = tables.getString("TABLE_NAME");
+    // Generate HTML Table...
+}</code></pre>
+                </div>
+
+                <h4>How to Run the Tool</h4>
+                <p>You can regenerate the database snapshot at any time by running the following command in your terminal:</p>
+                <div class="code-container" data-file="Terminal Command">
+<pre><code>java -cp ".;lib/*" org.bloodbank.DatabaseExplorer</code></pre>
+                </div>
+                <p>This will update the <b>BloodBank_Live_Database.html</b> file with the most current records from your clinic.</p>
+            </div>
+        </section>
+
+        <footer>
+            <p>BLOODLINK MASTER DOCUMENTATION &copy; 2026 | Comprehensive Guide</p>
+        </footer>
+    </main>
+
+</body>
+</html>

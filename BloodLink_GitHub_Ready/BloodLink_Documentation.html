@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodLink Technical Documentation for Beginners</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap');
+        
+        body {
+            font-family: 'Outfit', -apple-system, sans-serif;
+            background-color: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            font-size: 11pt;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px;
+            background: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .print-break {
+            page-break-before: always;
+        }
+
+        .cover-page {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 50px;
+        }
+
+        .cover-page h1 {
+            font-size: 3.5rem;
+            color: #ff4757;
+            margin-bottom: 10px;
+        }
+
+        .cover-page h2 {
+            font-size: 1.5rem;
+            color: #475569;
+            font-weight: 400;
+        }
+
+        .section-title {
+            color: #ff4757;
+            border-bottom: 2px solid #ff4757;
+            padding-bottom: 10px;
+            margin-top: 50px;
+            font-size: 2rem;
+            page-break-after: avoid;
+        }
+
+        h3 {
+            color: #1e293b;
+            margin-top: 35px;
+            font-size: 1.4rem;
+            border-left: 4px solid #ff4757;
+            padding-left: 10px;
+            page-break-after: avoid;
+        }
+        
+        h4 {
+            color: #334155;
+            font-size: 1.15rem;
+            margin-top: 25px;
+        }
+
+        p, ul, ol {
+            color: #475569;
+            font-size: 1.05rem;
+        }
+
+        .beginner-note {
+            background-color: #f0fdf4;
+            border-left: 4px solid #22c55e;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .beginner-note strong { color: #166534; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            page-break-inside: auto;
+        }
+
+        tr { page-break-inside: avoid; page-break-after: auto; }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 12px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) { background-color: #f8fafc; }
+
+        code {
+            background-color: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.95rem;
+            color: #b91c1c;
+        }
+
+        pre {
+            background-color: #1e293b;
+            color: #f8fafc;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            page-break-inside: avoid;
+        }
+
+        .diagram-box {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+            font-family: monospace;
+            white-space: pre;
+            overflow-x: auto;
+            line-height: 1.3;
+        }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; padding: 0; max-width: 100%; }
+            .cover-page { height: auto; margin-top: 15vh; margin-bottom: 25vh; border: none; }
+            @page { margin: 1.5cm; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Cover Page -->
+    <div class="cover-page">
+        <h1>🩸 BloodLink</h1>
+        <h2>Complete Project Description & Technical Documentation</h2>
+        <p style="margin-top: 40px; color: #94a3b8; font-size: 1.2rem;">A Beginner-Friendly Guide to the Full-Stack Blood Bank Management System</p>
+    </div>
+
+    <!-- Section 1 -->
+    <div class="print-break">
+        <h2 class="section-title">1. Project Overview</h2>
+        <p><strong>BloodLink</strong> is a comprehensive software application designed to help hospitals and blood banks efficiently manage their blood supply. Instead of using paper records or simple spreadsheets, BloodLink uses a database and a secure website interface to handle operations.</p>
+        
+        <div class="beginner-note">
+            <strong>💡 For Beginners: What is a "Full-Stack" Application?</strong><br>
+            A full-stack app has three parts: the "Frontend" (what the user sees and clicks), the "Backend" (the invisible brain processing rules), and the "Database" (where data is permanently stored). BloodLink controls all three.
+        </div>
+
+        <h3>The Problems BloodLink Solves:</h3>
+        <ul>
+            <li><strong>Inventory Management:</strong> It knows exactly how many bags of each blood group (A+, O-, AB+, etc.) are in the fridge at any given moment.</li>
+            <li><strong>Health Safety (56-Day Rule):</strong> Medical rules say a donor must wait 56 days between donations to stay healthy. The system calculates this automatically and blocks donations if a donor tries to give too early.</li>
+            <li><strong>Hospital Requests:</strong> When a hospital requests blood, the system instantly checks the inventory to see if that blood is available, approving it or putting it on hold.</li>
+            <li><strong>Security:</strong> Only authorized administrators can change stock or approve requests.</li>
+        </ul>
+    </div>
+
+    <!-- Section 2 -->
+    <div class="print-break">
+        <h2 class="section-title">2. System Architecture</h2>
+        <p>Architecture simply means how the different pieces of the software talk to each other. BloodLink is built in a <strong>3-Tier Architecture</strong>.</p>
+        
+        <div class="diagram-box">
+Tier 1: Frontend (The UI the user clicks)
+[ index.html (Public) | admin.html (Admin) | styles.css ]
+                     ↓
+             HTTP Requests (JSON)
+                     ↓
+Tier 2: Backend (The Java Brain)
+[ WebServer.java | HttpHandlers | AuthUtils ]
+                     ↓
+             JDBC (Database Link)
+                     ↓
+Tier 3: Database (The Storage)
+[ SQLite Database File (bloodbank.db) ]
+        </div>
+
+        <h3>How it works together:</h3>
+        <ol>
+            <li>You click a button on the website (Tier 1).</li>
+            <li>The website sends a message to the Java server asking it to do something (Tier 2).</li>
+            <li>Java checks its rules, connects to the SQLite Database (Tier 3), and saves or retrieves the data.</li>
+            <li>Java sends the answer back to the website, which updates the screen for you.</li>
+        </ol>
+    </div>
+
+    <!-- Section 3 -->
+    <div class="print-break">
+        <h2 class="section-title">3. Tools & Technologies Used</h2>
+        
+        <div class="beginner-note">
+            <strong>💡 Note:</strong> This project avoids heavy external "frameworks" (like Spring or React) on purpose. It is built strictly using core tools so it is easier to understand and run without complex setups.
+        </div>
+
+        <table>
+            <tr><th>Part of Project</th><th>Technology Used</th><th>What it does</th></tr>
+            <tr><td><strong>Backend Language</strong></td><td>Java (JDK 11+)</td><td>This is the main programming language writing the logic.</td></tr>
+            <tr><td><strong>Web Server</strong></td><td><code>com.sun.net.httpserver</code></td><td>A tool built into Java that listens for website clicks.</td></tr>
+            <tr><td><strong>Database</strong></td><td>SQLite 3</td><td>A database that lives in a single file instead of requiring heavy server software.</td></tr>
+            <tr><td><strong>Database Link</strong></td><td>JDBC (sqlite-jdbc.jar)</td><td>The translator that allows Java to send SQL commands to SQLite.</td></tr>
+            <tr><td><strong>Security</strong></td><td>SHA-256 Hashing</td><td>A math algorithm that scrambles passwords so hackers can't read them.</td></tr>
+            <tr><td><strong>Frontend</strong></td><td>HTML, CSS, JavaScript</td><td>HTML builds the structure. CSS makes it beautiful. JavaScript makes it interactive.</td></tr>
+        </table>
+    </div>
+
+    <!-- Section 4 -->
+    <div class="print-break">
+        <h2 class="section-title">4. Database Schema (How Data is Stored)</h2>
+        <p>A database uses "Tables" (like Excel sheets) to store information. The tables connect to each other using "Keys". BloodLink has 7 tables.</p>
+        
+        <table>
+            <tr><th>Table Name</th><th>What it stores</th><th>Key Columns</th></tr>
+            <tr><td><strong>Donors</strong></td><td>People who give blood</td><td>ID, Name, Blood Group, Last Donation Date</td></tr>
+            <tr><td><strong>Blood_Inventory</strong></td><td>The current fridge stock</td><td>Blood Group, Quantity of Bags</td></tr>
+            <tr><td><strong>Hospitals</strong></td><td>Partner hospitals</td><td>ID, Name, Address</td></tr>
+            <tr><td><strong>Blood_Requests</strong></td><td>Hospital orders for blood</td><td>Hospital ID, Blood Group Needed, Status</td></tr>
+            <tr><td><strong>Donation_Records</strong></td><td>History of every donation</td><td>Donor ID, Date, Quantity</td></tr>
+            <tr><td><strong>Users</strong></td><td>Login accounts</td><td>Username, Scrambled Password, Role (Admin)</td></tr>
+            <tr><td><strong>Activity_Log</strong></td><td>Audit trail for security</td><td>Action taken, Who did it, Time</td></tr>
+        </table>
+
+        <div class="beginner-note">
+            <strong>💡 For Beginners: What is an ID / Primary Key?</strong><br>
+            If there are two donors named "John Doe", the computer needs a way to tell them apart. We give each person a unique "ID" number (like Donor #1 and Donor #2). This ensures data doesn't get meant for the wrong person.
+        </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div class="print-break">
+        <h2 class="section-title">5. The Java Backend (How it works under the hood)</h2>
+        
+        <h3>WebServer.java (Main API Server)</h3>
+        <p>This single file is the core of the whole backend application. It does two things:</p>
+        <ol>
+            <li>It opens port <strong>9090</strong> on your computer so browsers can connect.</li>
+            <li>It creates 18 "Endpoints". An endpoint is basically a unique URL address that triggers a specific Java function. For example, visiting <code>/api/donors</code> runs the Java code to fetch the list of donors.</li>
+        </ol>
+
+        <h4>Examples of Endpoints:</h4>
+        <ul>
+            <li><code>/api/login</code> - Checks username against the scrambled password.</li>
+            <li><code>/api/donations</code> - Saves a new donation to history and adds +1 bag to the fridge.</li>
+            <li><code>/api/compatibility</code> - Figures out if a patient can safely receive a specific blood bag.</li>
+        </ul>
+
+        <h3>DatabaseManager.java & AuthUtils.java</h3>
+        <p><strong>DatabaseManager.java</strong> acts as the "Bridge." Every time Java needs to read or save data, it asks DatabaseManager to pass the message to SQLite.</p>
+        <p><strong>AuthUtils.java</strong> is the "Bouncer." When an admin creates a password like "admin123", AuthUtils scrambles it into a 64-character math string. If a hacker steals the database, they only see the scrambled math string, not the real password.</p>
+    </div>
+
+    <!-- Section 6 -->
+    <div class="print-break">
+        <h2 class="section-title">6. The Frontend (The User Interface)</h2>
+        
+        <h3>1. Public Portal (index.html)</h3>
+        <p>When you first load the page, you see the public portal. Anyone can view this. It shows live statistics (like how many total bags exist) to encourage people to donate. It also has a Donor Login and a button for Admins.</p>
+
+        <h3>2. Admin Portal (admin.html)</h3>
+        <p>This is hidden behind a password. It is a massive dashboard with 8 different tabs to run the business:</p>
+        <ul>
+            <li><strong>Dashboard:</strong> Visual charts of the blood stock and buttons to export PDF reports.</li>
+            <li><strong>Donors:</strong> A list of everyone. It automatically shows a green "Ready" or a yellow wait timer.</li>
+            <li><strong>New Donation:</strong> A form where admins type the Donor ID to record blood collected.</li>
+            <li><strong>Requests:</strong> A screen showing hospital orders. Admins click "Fulfill" to approve them.</li>
+            <li><strong>Activity Log:</strong> A security screen that shows every single button click made by any Admin.</li>
+        </ul>
+        
+        <div class="beginner-note">
+            <strong>💡 For Beginners: What is "Glassmorphism"?</strong><br>
+            If you notice the UI cards look like frosted glass with blurred backgrounds, this is a modern CSS design trend called "Glassmorphism" applied heavily in styles.css.
+        </div>
+    </div>
+
+    <!-- Section 7 -->
+    <div class="print-break">
+        <h2 class="section-title">7. Step-by-Step Code Flows (How logic connects)</h2>
+
+        <h3>Scenario A: An Admin Records a Donation</h3>
+        <ol>
+            <li>The admin looks at the website, types Donor ID #5, and clicks "Submit".</li>
+            <li>JavaScript takes that ID and sends a message to Java: <em>"Hey Java, Donor 5 just gave 1 bag."</em></li>
+            <li>Java asks the Database: <em>"When was the last time Donor 5 donated?"</em></li>
+            <li>The Database answers: <em>"They last donated 10 days ago."</em></li>
+            <li>Java calculates: 10 days is less than the required 56 days. It stops the process!</li>
+            <li>Java sends a message back to the website: <em>"Error: Donor is not eligible. Must wait 46 more days."</em></li>
+            <li>The website displays a red error warning the Admin.</li>
+        </ol>
+
+        <h3>Scenario B: A Hospital Requests Blood</h3>
+        <ol>
+            <li>City Hospital asks for 5 bags of O- blood.</li>
+            <li>Java asks the Database: <em>"How many O- bags are in the fridge?"</em></li>
+            <li>Database answers: <em>"We only have 2 bags of O-."</em></li>
+            <li>Java realizes there is not enough blood. It creates the order, but marks the status as <strong>"Pending (Low Stock)."</strong></li>
+            <li>The website shows a flashing Yellow Alert to warn the Admin that a hospital needs blood they don't have.</li>
+        </ol>
+
+        <div class="beginner-note">
+            <strong>💡 For Beginners: Database Transactions</strong><br>
+            When a donation succeeds, Java must do two things: 1) Save the history record. 2) Update the fridge stock. If the internet crashes between step 1 and step 2, the data becomes broken. To prevent this, Java uses "Transactions". A Transaction says: <em>"Either do EVERYTHING successfully, or cancel everything immediately. Never do just half the job."</em>
+        </div>
+    </div>
+    
+    <!-- Section 8 -->
+    <div class="print-break">
+        <h2 class="section-title">8. File Structure Summary (Where to find things)</h2>
+        <pre>
+BloodBankManagement/
+├── src/org/bloodbank/           ← Backend brain (Java)
+│   ├── WebServer.java           ← HTTP APIs and Logic
+│   └── DatabaseManager.java     ← SQLite connector
+│
+├── web/                         ← Frontend looks (HTML/CSS/JS)
+│   ├── index.html               ← Public view
+│   ├── admin.html               ← Secure admin view
+│   └── styles.css               ← Colors and animations
+│
+├── bloodbank.db                 ← The actual saved Data
+├── schema.sql                   ← Instructions on how to build empty tables
+├── build.bat                    ← Script to translate Java to machine code
+└── run.bat                      ← Script to turn the system on
+        </pre>
+    </div>
+
+</div>
+
+</body>
+</html>
